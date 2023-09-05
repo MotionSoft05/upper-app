@@ -4,7 +4,7 @@ function PantallasDirectorio() {
       <div>
         {/* selección pantallas */}
         <div>
-          <h2>Selecciones el tipo de pantalla</h2>
+          <h2>PantallasDirectorio</h2>
         </div>
         {/* Configuración */}
         <div></div>
@@ -12,3 +12,4 @@ function PantallasDirectorio() {
     </section>
   );
 }
+export default PantallasDirectorio;

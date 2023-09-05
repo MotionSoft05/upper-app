@@ -1,23 +1,55 @@
+"use client";
 import Sidebar from "@/components/dashboard/SideBar";
+import PantallasDirectorio from "@/components/dashboard/PantallasDirectorio";
+import AltaEventos from "@/components/dashboard/altaEventos";
+import ConsultaModEvento from "@/components/dashboard/consultaModEventos";
+import Guia from "@/components/dashboard/guia";
+import Licencia from "@/components/dashboard/licencia";
+import PantallasSalon from "@/components/dashboard/pantallasSalon";
+import Publicidad from "@/components/dashboard/publicidad";
+import Soporte from "@/components/dashboard/soporte";
 import Link from "next/link";
+import { useState } from "react";
 
 function DashBoard() {
+  const [showAltaEvento, setShowAltaEvento] = useState(true);
+  const [showConsultaEvento, setShowConsultaEvento] = useState(false);
+
+  const [showPantallaSalon, setShowPantallaSalon] = useState(false);
+  const [showPantallaDirectorio, setShowPantallaDirectorio] = useState(false);
+  const [showPublicidad, setShowPublicidad] = useState(false);
+
+  const [showlicencia, setShowlicencia] = useState(false);
+  const [showGuia, setShowGuia] = useState(false);
+  const [showSoporte, setShowSoporte] = useState(false);
+
   return (
     // <!-- component -->
     <div class="flex flex-row min-h-screen bg-gray-100 text-gray-800 pt-16">
       <aside class="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500">
-        <div class="sidebar-header flex items-center justify-center py-4">
-          <div class="inline-flex">
-            <a href="#" class="inline-flex flex-row items-center">
-              <img src="/img/logo.png" className="h-12" />
-            </a>
-          </div>
-        </div>
-        <Sidebar />
+        <Sidebar
+          setShowAltaEvento={setShowAltaEvento}
+          setShowConsultaEvento={setShowConsultaEvento}
+          setShowPantallaSalon={setShowPantallaSalon}
+          setShowPantallaDirectorio={setShowPantallaDirectorio}
+          setShowPublicidad={setShowPublicidad}
+          setShowlicencia={setShowlicencia}
+          setShowGuia={setShowGuia}
+          setShowSoporte={setShowSoporte}
+        />
       </aside>
       <main class="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
         <div class="main-content flex flex-col flex-grow p-4">
-          <h1 class="font-bold text-2xl text-gray-700">Dashboard</h1>
+          {showAltaEvento && <AltaEventos />}
+          {showConsultaEvento && <ConsultaModEvento />}
+
+          {showPantallaSalon && <PantallasSalon />}
+          {showPantallaDirectorio && <PantallasDirectorio />}
+          {showPublicidad && <Publicidad />}
+
+          {showlicencia && <Licencia />}
+          {showGuia && <Guia />}
+          {showSoporte && <Soporte />}
         </div>
       </main>
     </div>
