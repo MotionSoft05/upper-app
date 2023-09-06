@@ -11,14 +11,14 @@ function Sidebar({
   setShowSoporte,
 }) {
   return (
-    <div class="sidebar-content px-4 py-6">
-      <ul class="flex flex-col w-full">
-        <div class="my-px">
-          <span class="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
+    <div className="sidebar-content px-4 py-6">
+      <ul className="flex flex-col w-full">
+        <div className="my-px">
+          <span className="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
             Principal
           </span>
         </div>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(true);
@@ -33,9 +33,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -48,11 +48,11 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Alta de eventos</span>
+              <span className="ml-3">Alta de eventos</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -67,9 +67,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   fill="none"
                   stroke-linecap="round"
@@ -77,21 +77,21 @@ function Sidebar({
                   stroke-width="2"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  class="h-6 w-6"
+                  className="h-6 w-6"
                 >
                   <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                 </svg>
               </span>
-              <span class="ml-3">Consulta de eventos</span>
+              <span className="ml-3">Consulta de eventos</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
-          <span class="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
+        <li className="my-px">
+          <span className="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
             Ajustes pantallas
           </span>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -106,9 +106,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -121,11 +121,11 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Pantallas salon</span>
+              <span className="ml-3">Pantallas salon</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -140,9 +140,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-green-400">
+              <span className="flex items-center justify-center text-lg text-green-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -155,11 +155,11 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Pantallas directorio</span>
+              <span className="ml-3">Pantallas directorio</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -174,9 +174,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-green-400">
+              <span className="flex items-center justify-center text-lg text-green-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -189,16 +189,16 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Publicidad</span>
+              <span className="ml-3">Publicidad</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
-          <span class="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
+        <li className="my-px">
+          <span className="flex font-medium text-sm text-gray-300 px-4 my-4 uppercase">
             Mas información
           </span>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -213,9 +213,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -228,11 +228,11 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Información licencia</span>
+              <span className="ml-3">Información licencia</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -247,9 +247,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -262,11 +262,11 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Guías de Usuario</span>
+              <span className="ml-3">Guías de Usuario</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <button
             onClick={() => {
               setShowAltaEvento(false);
@@ -281,9 +281,9 @@ function Sidebar({
           >
             <a
               href="#"
-              class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
             >
-              <span class="flex items-center justify-center text-lg text-gray-400">
+              <span className="flex items-center justify-center text-lg text-gray-400">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   height="24"
@@ -296,16 +296,16 @@ function Sidebar({
                   />
                 </svg>
               </span>
-              <span class="ml-3">Contacto Soporte</span>
+              <span className="ml-3">Contacto Soporte</span>
             </a>
           </button>
         </li>
-        <li class="my-px">
+        <li className="my-px">
           <Link
             href="/login"
-            class="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+            className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
           >
-            <span class="flex items-center justify-center text-lg text-red-400">
+            <span className="flex items-center justify-center text-lg text-red-400">
               <svg
                 fill="none"
                 stroke-linecap="round"
@@ -313,12 +313,12 @@ function Sidebar({
                 stroke-width="2"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
-                class="h-6 w-6"
+                className="h-6 w-6"
               >
                 <path d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
               </svg>
             </span>
-            <span class="ml-3">Logout</span>
+            <span className="ml-3">Logout</span>
           </Link>
         </li>
       </ul>

@@ -25,8 +25,8 @@ function DashBoard() {
 
   return (
     // <!-- component -->
-    <div class="flex flex-row min-h-screen bg-gray-100 text-gray-800 pt-16">
-      <aside class="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500">
+    <div className="flex flex-row min-h-screen bg-gray-100 text-gray-800 pt-16">
+      <aside className="sidebar w-64 md:shadow transform -translate-x-full md:translate-x-0 transition-transform duration-150 ease-in bg-indigo-500">
         <Sidebar
           setShowAltaEvento={setShowAltaEvento}
           setShowConsultaEvento={setShowConsultaEvento}
@@ -38,8 +38,8 @@ function DashBoard() {
           setShowSoporte={setShowSoporte}
         />
       </aside>
-      <main class="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
-        <div class="main-content flex flex-col flex-grow p-4">
+      <main className="main flex flex-col flex-grow -ml-64 md:ml-0 transition-all duration-150 ease-in">
+        <div className="main-content flex flex-col flex-grow p-4">
           {showAltaEvento && <AltaEventos />}
           {showConsultaEvento && <ConsultaModEvento />}
 

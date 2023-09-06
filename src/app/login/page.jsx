@@ -25,7 +25,7 @@ function LogIn() {
                 />
               </svg>
               <input
-                class="pl-2 outline-none border-none"
+                class="pl-2 outline-none border-none text-black"
                 type="text"
                 name=""
                 id=""
@@ -47,7 +47,7 @@ function LogIn() {
                 />
               </svg>
               <input
-                class="pl-2 outline-none border-none"
+                class="pl-2 outline-none border-none text-black"
                 type="text"
                 name=""
                 id=""
