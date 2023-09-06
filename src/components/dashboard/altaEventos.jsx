@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import firebase from "firebase/compat/app";
+import "firebase/compat/firestore";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCzD--npY_6fZcXH-8CzBV7UGzPBqg85y8",
+  authDomain: "upper-a544e.firebaseapp.com",
+  projectId: "upper-a544e",
+  storageBucket: "upper-a544e.appspot.com",
+  messagingSenderId: "665713417470",
+  appId: "1:665713417470:web:73f7fb8ee518bea35999af",
+  measurementId: "G-QTFQ55YY5D",
+};
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+
 function AltaEventos() {
   const [value, setValue] = useState({
     startDate: new Date(),
     endDate: new Date().setMonth(11),
   });
+  const [alertaEnviada, setAlertaEnviada] = useState(false);
 
   const handleValueChange = (newValue) => {
     console.log("newValue:", newValue);
@@ -14,6 +32,62 @@ function AltaEventos() {
   };
 
   const [sliderRef] = useKeenSlider();
+
+  // Función para enviar los datos a Firebase
+  const enviarDatosAFirebase = () => {
+    const nombreEvento = document.getElementById("floating_name").value;
+    const tipoEvento = document.getElementById("floating_event").value;
+    const piso = document.getElementById("floating_floor").value;
+    const descripcion = document.getElementById("floating_descripcion").value;
+    const horaInicio = document.getElementById("hourSelectorInicio").value;
+    const minutoInicio = document.getElementById("minuteSelectorInicio").value;
+    const horaFinal = document.getElementById("hourSelectorFinal").value;
+    const minutoFinal = document.getElementById("minuteSelectorFinal").value;
+
+    const fechaInicio = new Date(value.startDate);
+    fechaInicio.setHours(horaInicio, minutoInicio, 0, 0); // Establecer los segundos en 0
+    const fechaFinal = new Date(value.endDate);
+    fechaFinal.setHours(horaFinal, minutoFinal, 0, 0); // Establecer los segundos en 0
+
+    // Accede a la colección 'eventos' en Firestore y agrega un nuevo documento
+    firebase
+      .firestore()
+      .collection("eventos")
+      .add({
+        nombreEvento,
+        tipoEvento,
+        piso,
+        descripcion,
+        horaInicio,
+        minutoInicio,
+        horaFinal,
+        minutoFinal,
+        fechaInicio,
+        fechaFinal, // Use the date object for the end date
+      })
+      .then(() => {
+        // Limpiar campos después de enviar
+        document.getElementById("floating_name").value = "";
+        document.getElementById("floating_event").value = "";
+        document.getElementById("floating_floor").value = "";
+        document.getElementById("floating_descripcion").value = "";
+        document.getElementById("hourSelectorInicio").value = "00";
+        document.getElementById("minuteSelectorInicio").value = "00";
+        document.getElementById("hourSelectorFinal").value = "00";
+        document.getElementById("minuteSelectorFinal").value = "00";
+
+        // Mostrar la alerta
+        setAlertaEnviada(true);
+
+        // Ocultar la alerta después de 3 segundos
+        setTimeout(() => {
+          setAlertaEnviada(false);
+        }, 3000);
+      })
+      .catch((error) => {
+        console.error("Error al enviar datos a Firebase:", error);
+      });
+  };
 
   return (
     <section className="px-32">
@@ -158,13 +232,15 @@ function AltaEventos() {
             </h4>
             <div className=" flex justify-between px-20">
               <div>
-                <div class="flex items-center space-x-4">
-                  <div class="text-gray-700 font-medium">Hora de Inicio:</div>
-                  <div class="relative">
-                    <div class="text-gray-700 font-medium">Horas:</div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-gray-700 font-medium">
+                    Hora de Inicio:
+                  </div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Horas:</div>
                     <select
-                      class="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="hourSelector"
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="hourSelectorInicio" // Cambio de ID a "hourSelectorInicio"
                     >
                       {Array.from({ length: 24 }, (_, i) => (
                         <option key={i} value={i.toString().padStart(2, "0")}>
@@ -172,13 +248,13 @@ function AltaEventos() {
                         </option>
                       ))}
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
                   </div>
-                  <div class="relative">
-                    <div class="text-gray-700 font-medium">Minutos:</div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Minutos:</div>
                     <select
-                      class="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="minuteSelector"
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="minuteSelectorInicio" // Cambio de ID a "minuteSelectorInicio"
                     >
                       {Array.from({ length: 60 }, (_, i) => (
                         <option key={i} value={i.toString().padStart(2, "0")}>
@@ -186,42 +262,52 @@ function AltaEventos() {
                         </option>
                       ))}
                     </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-                  </div>
-                </div>
-
-                <div class="flex items-center space-x-4">
-                  <div class="text-gray-700 font-medium">Hora de Final:</div>
-                  <div class="relative">
-                    <div class="text-gray-700 font-medium">Horas:</div>
-                    <select
-                      class="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="hourSelector"
-                    >
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-                  </div>
-                  <div class="relative">
-                    <div class="text-gray-700 font-medium">Minutos:</div>
-                    <select
-                      class="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="minuteSelector"
-                    >
-                      {Array.from({ length: 60 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
                   </div>
                 </div>
               </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-gray-700 font-medium">Hora de Final:</div>
+              <div className="relative">
+                <div className="text-gray-700 font-medium">Horas:</div>
+                <select
+                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="hourSelectorFinal" // Cambio de ID a "hourSelectorFinal"
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+              </div>
+              <div className="relative">
+                <div className="text-gray-700 font-medium">Minutos:</div>
+                <select
+                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="minuteSelectorFinal" // Cambio de ID a "minuteSelectorFinal"
+                >
+                  {Array.from({ length: 60 }, (_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+              </div>
+              <button
+                onClick={enviarDatosAFirebase}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
+              >
+                Enviar
+              </button>
+              {alertaEnviada && (
+                <div className="mt-4 text-green-500">
+                  Los datos se enviaron correctamente.
+                </div>
+              )}
             </div>
           </div>
           {/* Pantallas */}
