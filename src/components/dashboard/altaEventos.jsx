@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
+import "keen-slider/keen-slider.min.css";
+import { useKeenSlider } from "keen-slider/react";
 function AltaEventos() {
   const [value, setValue] = useState({
     startDate: new Date(),
@@ -10,6 +12,8 @@ function AltaEventos() {
     console.log("newValue:", newValue);
     setValue(newValue);
   };
+
+  const [sliderRef] = useKeenSlider();
 
   return (
     <section className="px-32">
@@ -126,10 +130,20 @@ function AltaEventos() {
             </fieldset>
           </div>
           {/* Slider */}
-
-          <div class="bg-gray-300 p-4">Elemento 2</div>
+          <div class="bg-gray-300 p-4">
+            <div ref={sliderRef} className="keen-slider">
+              <div className="keen-slider__slide number-slide1">
+                <img src="/img/promo1.jpg" />
+              </div>
+              <div className="keen-slider__slide number-slide2">
+                <img src="/img/promo1.jpg" />
+              </div>
+              <div className="keen-slider__slide number-slide3">
+                <img src="/img/promo1.jpg" />
+              </div>
+            </div>
+          </div>
           {/* Hora y Dias */}
-
           <div class="bg-gray-300 p-4">
             <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
               Seleccione los Dias
@@ -562,7 +576,6 @@ function AltaEventos() {
             </div>
           </div>
           {/* Pantallas */}
-
           <div class="bg-gray-300 p-4">Elemento 4</div>
         </section>
       </div>
