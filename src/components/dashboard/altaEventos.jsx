@@ -56,7 +56,6 @@ function AltaEventos() {
         nombreEvento,
         tipoEvento,
         lugar,
-
         horaInicio,
         minutoInicio,
         horaFinal,
