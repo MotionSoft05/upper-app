@@ -1,16 +1,21 @@
 import React, { useState } from "react";
+import { ChromePicker } from "react-color"; // Importa ChromePicker de react-color
 
 function PantallasSalon() {
   const [screen1AspectRatio, setScreen1AspectRatio] = useState("16:9");
   const [screen2AspectRatio, setScreen2AspectRatio] = useState("9:16");
+  const [templateColor, setTemplateColor] = useState("#D1D5DB");
+  const [fontStyle, setFontStyle] = useState("Arial");
+  const [fontColor, setFontColor] = useState("#000000"); // Color de letra
+  const [showColorPicker, setShowColorPicker] = useState(false); // Estado para mostrar/ocultar el selector de color
+  const [showFontColorPicker, setShowFontColorPicker] = useState(false); // Estado para mostrar/ocultar el selector de color de letra
 
   const handleScreen1Default = () => {
     setScreen1AspectRatio("16:9");
   };
 
   const handleScreen1UseThis = () => {
-    // Aquí puedes implementar la lógica para aplicar la relación de aspecto
-    // de la pantalla 1 al diseño.
+    // Lógica para aplicar la relación de aspecto de pantalla 1 al diseño.
   };
 
   const handleScreen2Default = () => {
@@ -18,8 +23,34 @@ function PantallasSalon() {
   };
 
   const handleScreen2UseThis = () => {
-    // Aquí puedes implementar la lógica para aplicar la relación de aspecto
-    // de la pantalla 2 al diseño.
+    // Lógica para aplicar la relación de aspecto de pantalla 2 al diseño.
+  };
+
+  const handleTemplateColorChange = () => {
+    // Mostrar u ocultar el selector de color de plantilla cuando se hace clic en "Seleccionar Color"
+    setShowColorPicker(!showColorPicker);
+  };
+
+  const handleFontColorChange = () => {
+    // Mostrar u ocultar el selector de color de letra cuando se hace clic en "Seleccionar Color"
+    setShowFontColorPicker(!showFontColorPicker);
+  };
+
+  const handleColorChange = (color) => {
+    // Manejar el cambio de color y actualizar el estado del color correspondiente
+    if (showColorPicker) {
+      setTemplateColor(color.hex);
+    } else if (showFontColorPicker) {
+      setFontColor(color.hex);
+    }
+  };
+
+  const handleFontStyleChange = (e) => {
+    setFontStyle(e.target.value);
+  };
+
+  const handlePreviewClick = () => {
+    // Lógica para la vista previa del diseño con las opciones seleccionadas.
   };
 
   return (
@@ -77,168 +108,104 @@ function PantallasSalon() {
           </div>
         </div>
 
-        <section class="max-w-4xl p-6 mx-auto  rounded-md shadow-md bg-gray-800 mt-20">
-          <form>
-            <h1 class="text-xl font-bold text-white capitalize dark:text-white">
-              Información del evento
-            </h1>
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-              <div>
-                <label class="text-white dark:text-gray-200" for="username">
-                  Nombre del salon
-                </label>
-                <input
-                  type="text"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-
-              <div>
-                <label class="text-white dark:text-gray-200" for="username">
-                  Titulo
-                </label>
-                <input
-                  type="text"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
+        {/* Sección de personalización */}
+        <section className="max-w-4xl p-6 mx-auto rounded-md shadow-md bg-gray-800 mt-20">
+          <h1 className="text-xl font-bold text-white capitalize dark:text-white">
+            Personalización del Template
+          </h1>
+          <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+            <div>
+              <label className="text-white dark:text-gray-200">
+                Color de la plantilla
+              </label>
+              <div className="flex items-center">
+                <button
+                  onClick={handleTemplateColorChange}
+                  className="bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
                 >
-                  Hora de inicio
-                </label>
-                <input
-                  id="date"
-                  type="date"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
-                >
-                  Hora de final
-                </label>
-                <input
-                  id="date"
-                  type="date"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
-                >
-                  Fecha
-                </label>
-                <input
-                  id="date"
-                  type="date"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
-                >
-                  Descripción
-                </label>
-                <textarea
-                  id="textarea"
-                  type="textarea"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                ></textarea>
-              </div>
-            </div>
-
-            <h1 class="text-xl font-bold text-white capitalize dark:text-white pt-8">
-              Diseño de plantilla
-            </h1>
-            <div class="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
-                >
-                  Color de la plantilla
-                </label>
-                <input
-                  id="color"
-                  type="color"
-                  class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring"
-                />
-              </div>
-              <div>
-                <label
-                  class="text-white dark:text-gray-200"
-                  for="passwordConfirmation"
-                >
-                  Estilo de texto
-                </label>
-                <select class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-500 dark:focus:border-blue-500 focus:outline-none focus:ring">
-                  <option>Arial</option>
-                  <option>Times New Roman</option>
-                  <option>Verdana</option>
-                  <option>Rockwell</option>
-                </select>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-white">Logo</label>
-                <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md">
-                  <div class="space-y-1 text-center">
-                    <svg
-                      class="mx-auto h-12 w-12 text-white"
-                      stroke="currentColor"
-                      fill="none"
-                      viewBox="0 0 48 48"
-                      aria-hidden="true"
+                  Seleccionar Color
+                </button>
+                {showColorPicker && (
+                  <div className="absolute z-10">
+                    <ChromePicker
+                      color={templateColor}
+                      onChange={handleColorChange}
+                    />
+                    <button
+                      onClick={handleTemplateColorChange}
+                      className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
                     >
-                      <path
-                        d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                        stroke-width="2"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    <div class="flex text-sm text-gray-600">
-                      <label
-                        for="file-upload"
-                        class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500"
-                      >
-                        <span class="">Upload a file</span>
-                        <input
-                          id="file-upload"
-                          name="file-upload"
-                          type="file"
-                          class="sr-only"
-                        />
-                      </label>
-                      <p class="pl-1 text-white">or drag and drop</p>
-                    </div>
-                    <p class="text-xs text-white">PNG, JPG, GIF up to 10MB</p>
+                      Listo
+                    </button>
                   </div>
-                </div>
+                )}
+                <div
+                  className="w-8 h-8 rounded-full ml-4"
+                  style={{ backgroundColor: templateColor }}
+                ></div>
               </div>
             </div>
-
-            <div class="flex justify-end mt-6">
-              <button class="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600">
-                Save
-              </button>
+            <div>
+              <label className="text-white dark:text-gray-200">
+                Color de letra
+              </label>
+              <div className="flex items-center">
+                <button
+                  onClick={handleFontColorChange}
+                  className="bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+                >
+                  Seleccionar Color
+                </button>
+                {showFontColorPicker && (
+                  <div className="absolute z-10">
+                    <ChromePicker
+                      color={fontColor}
+                      onChange={handleColorChange}
+                    />
+                    <button
+                      onClick={handleFontColorChange}
+                      className="mt-2 bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+                    >
+                      Listo
+                    </button>
+                  </div>
+                )}
+                <div
+                  className="w-8 h-8 rounded-full ml-4"
+                  style={{ backgroundColor: fontColor }}
+                ></div>
+              </div>
             </div>
-          </form>
+            <div>
+              <label className="text-white dark:text-gray-200">
+                Estilo de texto
+              </label>
+              <select
+                value={fontStyle}
+                onChange={handleFontStyleChange}
+                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark.bg-gray-800 dark.text-gray-300 dark.border-gray-600 focus.border-blue-500 dark.focus.border-blue-500 focus.outline-none focus.ring"
+              >
+                <option>Arial</option>
+                <option>Times New Roman</option>
+                <option>Verdana</option>
+                <option>Rockwell</option>
+                {/* Agregar más opciones de fuente aquí */}
+              </select>
+            </div>
+          </div>
+
+          <div className="flex justify-end mt-6">
+            <button
+              onClick={handlePreviewClick}
+              className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover.bg-pink-700 focus.outline-none focus.bg-gray-600"
+            >
+              Vista Previa
+            </button>
+          </div>
         </section>
       </div>
     </section>
   );
 }
+
 export default PantallasSalon;
