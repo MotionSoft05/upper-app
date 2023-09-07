@@ -1,14 +1,29 @@
 import React, { useState } from "react";
-import { ChromePicker } from "react-color"; // Importa ChromePicker de react-color
+import { ChromePicker } from "react-color";
+import Select from "react-select";
 
 function PantallasSalon() {
   const [screen1AspectRatio, setScreen1AspectRatio] = useState("16:9");
   const [screen2AspectRatio, setScreen2AspectRatio] = useState("9:16");
   const [templateColor, setTemplateColor] = useState("#D1D5DB");
-  const [fontStyle, setFontStyle] = useState("Arial");
-  const [fontColor, setFontColor] = useState("#000000"); // Color de letra
-  const [showColorPicker, setShowColorPicker] = useState(false); // Estado para mostrar/ocultar el selector de color
-  const [showFontColorPicker, setShowFontColorPicker] = useState(false); // Estado para mostrar/ocultar el selector de color de letra
+  const [fontColor, setFontColor] = useState("#000000");
+  const [showColorPicker, setShowColorPicker] = useState(false);
+  const [showFontColorPicker, setShowFontColorPicker] = useState(false);
+
+  const fontStyleOptions = [
+    { value: "Arial", label: "Arial" },
+    { value: "Times New Roman", label: "Times New Roman" },
+    { value: "Verdana", label: "Verdana" },
+    { value: "Rockwell", label: "Rockwell" },
+    { value: "Helvetica", label: "Helvetica" },
+    { value: "Courier New", label: "Courier New" },
+    { value: "Georgia", label: "Georgia" },
+    { value: "Tahoma", label: "Tahoma" },
+    { value: "Trebuchet MS", label: "Trebuchet MS" },
+    { value: "Palatino", label: "Palatino" },
+  ];
+
+  const [selectedFontStyle, setSelectedFontStyle] = useState(null);
 
   const handleScreen1Default = () => {
     setScreen1AspectRatio("16:9");
@@ -27,17 +42,14 @@ function PantallasSalon() {
   };
 
   const handleTemplateColorChange = () => {
-    // Mostrar u ocultar el selector de color de plantilla cuando se hace clic en "Seleccionar Color"
     setShowColorPicker(!showColorPicker);
   };
 
   const handleFontColorChange = () => {
-    // Mostrar u ocultar el selector de color de letra cuando se hace clic en "Seleccionar Color"
     setShowFontColorPicker(!showFontColorPicker);
   };
 
   const handleColorChange = (color) => {
-    // Manejar el cambio de color y actualizar el estado del color correspondiente
     if (showColorPicker) {
       setTemplateColor(color.hex);
     } else if (showFontColorPicker) {
@@ -45,8 +57,8 @@ function PantallasSalon() {
     }
   };
 
-  const handleFontStyleChange = (e) => {
-    setFontStyle(e.target.value);
+  const handleFontStyleChange = (selectedOption) => {
+    setSelectedFontStyle(selectedOption);
   };
 
   const handlePreviewClick = () => {
@@ -121,7 +133,7 @@ function PantallasSalon() {
               <div className="flex items-center">
                 <button
                   onClick={handleTemplateColorChange}
-                  className="bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
                 >
                   Seleccionar Color
                 </button>
@@ -152,7 +164,7 @@ function PantallasSalon() {
               <div className="flex items-center">
                 <button
                   onClick={handleFontColorChange}
-                  className="bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
                 >
                   Seleccionar Color
                 </button>
@@ -164,7 +176,7 @@ function PantallasSalon() {
                     />
                     <button
                       onClick={handleFontColorChange}
-                      className="mt-2 bg-blue-500 hover.bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+                      className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
                     >
                       Listo
                     </button>
@@ -180,24 +192,19 @@ function PantallasSalon() {
               <label className="text-white dark:text-gray-200">
                 Estilo de texto
               </label>
-              <select
-                value={fontStyle}
+              <Select
+                options={fontStyleOptions}
+                value={selectedFontStyle}
                 onChange={handleFontStyleChange}
-                className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md dark.bg-gray-800 dark.text-gray-300 dark.border-gray-600 focus.border-blue-500 dark.focus.border-blue-500 focus.outline-none focus.ring"
-              >
-                <option>Arial</option>
-                <option>Times New Roman</option>
-                <option>Verdana</option>
-                <option>Rockwell</option>
-                {/* Agregar más opciones de fuente aquí */}
-              </select>
+                placeholder="Seleccionar estilo de texto"
+              />
             </div>
           </div>
 
           <div className="flex justify-end mt-6">
             <button
               onClick={handlePreviewClick}
-              className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover.bg-pink-700 focus.outline-none focus.bg-gray-600"
+              className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
             >
               Vista Previa
             </button>
