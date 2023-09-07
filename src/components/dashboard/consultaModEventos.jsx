@@ -28,10 +28,10 @@ function ConsultaModEvento() {
           .collection("eventos")
           .get();
         const eventosData = eventosSnapshot.docs.map((doc) => ({
-          id: doc.id,
+          id: doc.id, // Aquí recuperamos el ID generado automáticamente
           ...doc.data(),
-          fechaInicio: doc.data().fechaInicio.toDate(), // Convertir a fecha JavaScript
-          fechaFinal: doc.data().fechaFinal.toDate(), // Convertir a fecha JavaScript
+          fechaInicio: doc.data().fechaInicio.toDate(),
+          fechaFinal: doc.data().fechaFinal.toDate(),
         }));
         setEventos(eventosData);
       } catch (error) {
@@ -57,7 +57,11 @@ function ConsultaModEvento() {
   };
 
   const convertirTimestampAFechaString = (timestamp) => {
-    const options = { year: "numeric", month: "long", day: "numeric" };
+    const options = {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    };
     return new Date(timestamp).toLocaleDateString(undefined, options);
   };
 
@@ -102,6 +106,9 @@ function ConsultaModEvento() {
                   HORA DE FINALIZACIÓN
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ID DEL EVENTO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ACCIONES
                 </th>
               </tr>
@@ -134,6 +141,7 @@ function ConsultaModEvento() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {evento.horaFinal}:{evento.minutoFinal}
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>{" "}
                   <td className="px-6 py-4 whitespace-nowrap">
                     <button
                       onClick={() => eliminarEvento(evento.id)}
