@@ -80,7 +80,7 @@ function AltaEventos() {
         // Ocultar la alerta después de 3 segundos
         setTimeout(() => {
           setAlertaEnviada(false);
-        }, 3000);
+        }, 6000);
       })
       .catch((error) => {
         console.error("Error al enviar datos a Firebase:", error);
@@ -178,7 +178,6 @@ function AltaEventos() {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
                   </div>
                   <div className="relative">
                     <div className="text-gray-700 font-medium">Minutos:</div>
@@ -192,9 +191,9 @@ function AltaEventos() {
                         </option>
                       ))}
                     </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
                   </div>
                 </div>
+
                 <div className="flex items-center space-x-4">
                   <div className="text-gray-700 font-medium">
                     Hora de Final:
