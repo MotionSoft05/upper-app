@@ -1,4 +1,27 @@
+import React, { useState } from "react";
+
 function PantallasSalon() {
+  const [screen1AspectRatio, setScreen1AspectRatio] = useState("16:9");
+  const [screen2AspectRatio, setScreen2AspectRatio] = useState("9:16");
+
+  const handleScreen1Default = () => {
+    setScreen1AspectRatio("16:9");
+  };
+
+  const handleScreen1UseThis = () => {
+    // Aquí puedes implementar la lógica para aplicar la relación de aspecto
+    // de la pantalla 1 al diseño.
+  };
+
+  const handleScreen2Default = () => {
+    setScreen2AspectRatio("9:16");
+  };
+
+  const handleScreen2UseThis = () => {
+    // Aquí puedes implementar la lógica para aplicar la relación de aspecto
+    // de la pantalla 2 al diseño.
+  };
+
   return (
     <section className="px-32">
       <div>
@@ -9,21 +32,51 @@ function PantallasSalon() {
         </div>
 
         <div className="flex justify-center space-x-44">
-          {/* selección pantallas */}
-          <button>
-            <div className="border border-black  px-40 py-28">
+          {/* Pantalla 1 */}
+          <div>
+            <div
+              className={`border border-black px-40 py-28 aspect-ratio-${screen1AspectRatio}`}
+            >
               <h2>Tipo pantalla 1</h2>
+              <p>Relación de aspecto: {screen1AspectRatio}</p>
             </div>
-          </button>
+            <button
+              onClick={handleScreen1Default}
+              className="mb-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Set Default
+            </button>
+            <button
+              onClick={handleScreen1UseThis}
+              className="mt-2 bg-gray-300 hover.bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Use This
+            </button>
+          </div>
 
-          {/* Configuración */}
-
-          <button>
-            <div className="border border-black  px-20 py-40">
+          {/* Pantalla 2 */}
+          <div>
+            <div
+              className={`border border-black px-20 py-40 aspect-ratio-${screen2AspectRatio}`}
+            >
               <h2>Tipo pantalla 2</h2>
+              <p>Relación de aspecto: {screen2AspectRatio}</p>
             </div>
-          </button>
+            <button
+              onClick={handleScreen2Default}
+              className="mb-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Set Default
+            </button>
+            <button
+              onClick={handleScreen2UseThis}
+              className="mt-2 bg-gray-300 hover.bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+            >
+              Use This
+            </button>
+          </div>
         </div>
+
         <section class="max-w-4xl p-6 mx-auto  rounded-md shadow-md bg-gray-800 mt-20">
           <form>
             <h1 class="text-xl font-bold text-white capitalize dark:text-white">
