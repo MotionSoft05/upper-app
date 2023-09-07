@@ -37,8 +37,7 @@ function AltaEventos() {
   const enviarDatosAFirebase = () => {
     const nombreEvento = document.getElementById("floating_name").value;
     const tipoEvento = document.getElementById("floating_event").value;
-    const piso = document.getElementById("floating_floor").value;
-    const descripcion = document.getElementById("floating_descripcion").value;
+    const lugar = document.getElementById("floating_floor").value;
     const horaInicio = document.getElementById("hourSelectorInicio").value;
     const minutoInicio = document.getElementById("minuteSelectorInicio").value;
     const horaFinal = document.getElementById("hourSelectorFinal").value;
@@ -56,8 +55,8 @@ function AltaEventos() {
       .add({
         nombreEvento,
         tipoEvento,
-        piso,
-        descripcion,
+        lugar,
+
         horaInicio,
         minutoInicio,
         horaFinal,
@@ -70,7 +69,7 @@ function AltaEventos() {
         document.getElementById("floating_name").value = "";
         document.getElementById("floating_event").value = "";
         document.getElementById("floating_floor").value = "";
-        document.getElementById("floating_descripcion").value = "";
+
         document.getElementById("hourSelectorInicio").value = "00";
         document.getElementById("minuteSelectorInicio").value = "00";
         document.getElementById("hourSelectorFinal").value = "00";
@@ -114,94 +113,135 @@ function AltaEventos() {
                   for="floating_name"
                   class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  Nombre de evento
+                  Nombre del evento
                 </label>
               </div>
 
-              <div class="grid md:grid-cols-2 md:gap-6">
-                <div class="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="floating_event"
-                    id="floating_event"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2  appearance-none  border-gray-600  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    for="floating_event"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Tipo de evento
-                  </label>
-                </div>
-
-                <div class="relative z-0 w-full mb-6 group">
-                  <input
-                    type="text"
-                    name="floating_floor"
-                    id="floating_floor"
-                    class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2  appearance-none  border-gray-600  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
-                    required
-                  />
-                  <label
-                    for="floating_floor"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
-                  >
-                    Piso
-                  </label>
-                </div>
-              </div>
               <div class="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
-                  name="floating_descripcion"
-                  id="floating_descripcion"
+                  name="floating_event"
+                  id="floating_event"
                   class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2  appearance-none  border-gray-600  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   placeholder=" "
                   required
                 />
                 <label
-                  for="floating_descripcion"
+                  for="floating_event"
                   class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
                 >
-                  Descripción
+                  Tipo de evento
                 </label>
+              </div>
+
+              <div class="relative z-0 w-full mb-6 group">
+                <input
+                  type="text"
+                  name="floating_floor"
+                  id="floating_floor"
+                  class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2  appearance-none  border-gray-600  focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                  placeholder=" "
+                  required
+                />
+                <label
+                  for="floating_floor"
+                  class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600  peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
+                >
+                  Lugar
+                </label>
+              </div>
+
+              <div class="bg-gray-300 p-4">
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
+                  Seleccione los días:
+                </h4>
+                <Datepicker
+                  useRange={false}
+                  value={value}
+                  onChange={handleValueChange}
+                />
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
+                  Seleccione las horas:
+                </h4>
+                <div className="flex items-center space-x-4">
+                  <div className="text-gray-700 font-medium">
+                    Hora de Inicio:
+                  </div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Horas:</div>
+                    <select
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="hourSelectorInicio"
+                    >
+                      {Array.from({ length: 24 }, (_, i) => (
+                        <option key={i} value={i.toString().padStart(2, "0")}>
+                          {i.toString().padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                  </div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Minutos:</div>
+                    <select
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="minuteSelectorInicio"
+                    >
+                      {Array.from({ length: 60 }, (_, i) => (
+                        <option key={i} value={i.toString().padStart(2, "0")}>
+                          {i.toString().padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-gray-700 font-medium">
+                    Hora de Final:
+                  </div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Horas:</div>
+                    <select
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="hourSelectorFinal"
+                    >
+                      {Array.from({ length: 24 }, (_, i) => (
+                        <option key={i} value={i.toString().padStart(2, "0")}>
+                          {i.toString().padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                  </div>
+                  <div className="relative">
+                    <div className="text-gray-700 font-medium">Minutos:</div>
+                    <select
+                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                      id="minuteSelectorFinal"
+                    >
+                      {Array.from({ length: 60 }, (_, i) => (
+                        <option key={i} value={i.toString().padStart(2, "0")}>
+                          {i.toString().padStart(2, "0")}
+                        </option>
+                      ))}
+                    </select>
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                  </div>
+                </div>
+                <button
+                  onClick={enviarDatosAFirebase}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
+                >
+                  Enviar
+                </button>
+                {alertaEnviada && (
+                  <div className="mt-4 text-green-500">
+                    Los datos se enviaron correctamente.
+                  </div>
+                )}
               </div>
             </form>
-
-            <fieldset>
-              <div class="flex items-center mb-4">
-                <input
-                  id="checkbox-2"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 "
-                />
-                <label
-                  for="checkbox-2"
-                  class="ml-2 text-sm font-medium text-gray-900"
-                >
-                  Texto de salon
-                </label>
-              </div>
-
-              <div class="flex items-center mb-4">
-                <input
-                  id="checkbox-3"
-                  type="checkbox"
-                  value=""
-                  class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                />
-                <label
-                  for="checkbox-3"
-                  class="ml-2 text-sm font-medium text-gray-900 "
-                >
-                  Texto de piso
-                </label>
-              </div>
-            </fieldset>
           </div>
           {/* Slider */}
           <div class="bg-gray-300 p-4">
@@ -217,95 +257,6 @@ function AltaEventos() {
               </div>
             </div>
           </div>
-          {/* Hora y Dias */}
-          <div class="bg-gray-300 p-4">
-            <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
-              Seleccione los días:
-            </h4>
-            <Datepicker
-              useRange={false}
-              value={value}
-              onChange={handleValueChange}
-            />
-            <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
-              Seleccione las horas:
-            </h4>
-            <div className="flex items-center space-x-4">
-              <div className="text-gray-700 font-medium">Hora de Inicio:</div>
-              <div className="relative">
-                <div className="text-gray-700 font-medium">Horas:</div>
-                <select
-                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="hourSelectorInicio"
-                >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i} value={i.toString().padStart(2, "0")}>
-                      {i.toString().padStart(2, "0")}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-              </div>
-              <div className="relative">
-                <div className="text-gray-700 font-medium">Minutos:</div>
-                <select
-                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="minuteSelectorInicio"
-                >
-                  {Array.from({ length: 60 }, (_, i) => (
-                    <option key={i} value={i.toString().padStart(2, "0")}>
-                      {i.toString().padStart(2, "0")}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-4">
-              <div className="text-gray-700 font-medium">Hora de Final:</div>
-              <div className="relative">
-                <div className="text-gray-700 font-medium">Horas:</div>
-                <select
-                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="hourSelectorFinal"
-                >
-                  {Array.from({ length: 24 }, (_, i) => (
-                    <option key={i} value={i.toString().padStart(2, "0")}>
-                      {i.toString().padStart(2, "0")}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-              </div>
-              <div className="relative">
-                <div className="text-gray-700 font-medium">Minutos:</div>
-                <select
-                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="minuteSelectorFinal"
-                >
-                  {Array.from({ length: 60 }, (_, i) => (
-                    <option key={i} value={i.toString().padStart(2, "0")}>
-                      {i.toString().padStart(2, "0")}
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-              </div>
-              <button
-                onClick={enviarDatosAFirebase}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
-              >
-                Enviar
-              </button>
-              {alertaEnviada && (
-                <div className="mt-4 text-green-500">
-                  Los datos se enviaron correctamente.
-                </div>
-              )}
-            </div>
-          </div>
-          {/* Pantallas */}
-          <div class="bg-gray-300 p-4">Elemento 4</div>
         </section>
       </div>
     </section>
