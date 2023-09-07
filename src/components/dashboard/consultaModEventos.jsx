@@ -87,10 +87,7 @@ function ConsultaModEvento() {
                   TIPO DE EVENTO
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  PISO
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  DESCRIPCIÓN
+                  LUGAR
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   FECHA DE INICIO
@@ -122,9 +119,8 @@ function ConsultaModEvento() {
                   <td className="px-6 py-4 whitespace-nowrap">
                     {evento.tipoEvento}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{evento.piso}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.descripcion}
+                    {evento.lugar}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {convertirTimestampAFechaString(evento.fechaInicio)}
