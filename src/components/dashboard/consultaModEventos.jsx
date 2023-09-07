@@ -27,7 +27,12 @@ function ConsultaModEvento() {
           .firestore()
           .collection("eventos")
           .get();
-        const eventosData = eventosSnapshot.docs.map((doc) => doc.data());
+        const eventosData = eventosSnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+          fechaInicio: doc.data().fechaInicio.toDate(), // Convertir a fecha JavaScript
+          fechaFinal: doc.data().fechaFinal.toDate(), // Convertir a fecha JavaScript
+        }));
         setEventos(eventosData);
       } catch (error) {
         console.error("Error al consultar eventos:", error);
@@ -38,6 +43,24 @@ function ConsultaModEvento() {
     consultarEventos();
   }, []);
 
+  const eliminarEvento = async (id) => {
+    try {
+      // Eliminar el evento de Firebase
+      await firebase.firestore().collection("eventos").doc(id).delete();
+
+      // Actualizar la lista de eventos localmente
+      const eventosActualizados = eventos.filter((evento) => evento.id !== id);
+      setEventos(eventosActualizados);
+    } catch (error) {
+      console.error("Error al eliminar el evento:", error);
+    }
+  };
+
+  const convertirTimestampAFechaString = (timestamp) => {
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return new Date(timestamp).toLocaleDateString(undefined, options);
+  };
+
   return (
     <section className="px-32">
       <div>
@@ -46,37 +69,87 @@ function ConsultaModEvento() {
             Consulta y Modificación de Eventos
           </h1>
         </div>
-        <section className="grid grid-cols-2 gap-4">
+        <section className="bg-gray-300 p-4 overflow-x-auto">
           {/* Lista de eventos */}
-          <div className="bg-gray-300 p-4">
-            <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
-              Lista de Eventos
-            </h4>
-            <ul className="divide-y divide-gray-300">
+          <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
+            Lista de Eventos
+          </h4>
+          <table className="min-w-full">
+            <thead>
+              <tr>
+                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NÚMERO DE EVENTO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  NOMBRE DE EVENTO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  TIPO DE EVENTO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  PISO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  DESCRIPCIÓN
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  FECHA DE INICIO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  FECHA DE FINALIZACIÓN
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  HORA DE INICIO
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  HORA DE FINAL
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  ACCIONES
+                </th>
+              </tr>
+            </thead>
+            <tbody>
               {eventos.map((evento, index) => (
-                <li key={index} className="py-2">
-                  <div className="text-lg font-semibold">
+                <tr
+                  key={index}
+                  className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
+                >
+                  <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {evento.nombreEvento}
-                  </div>
-                  <div className="text-gray-600">Tipo: {evento.tipoEvento}</div>
-                  <div className="text-gray-600">Piso: {evento.piso}</div>
-                  <div className="text-gray-600">
-                    Descripción: {evento.descripcion}
-                  </div>
-                  <div className="text-gray-600">
-                    Hora de Inicio: {evento.horaInicio}:{evento.minutoInicio}
-                  </div>
-                  <div className="text-gray-600">
-                    Hora de Final: {evento.horaFinal}:{evento.minutoFinal}
-                  </div>
-                </li>
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.tipoEvento}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">{evento.piso}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.descripcion}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {convertirTimestampAFechaString(evento.fechaInicio)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {convertirTimestampAFechaString(evento.fechaFinal)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.horaInicio}:{evento.minutoInicio}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.horaFinal}:{evento.minutoFinal}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => eliminarEvento(evento.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Eliminar
+                    </button>
+                  </td>
+                </tr>
               ))}
-            </ul>
-          </div>
-          {/* Configuración */}
-          <div className="bg-gray-300 p-4">
-            {/* Aquí puedes agregar la configuración adicional si es necesario */}
-          </div>
+            </tbody>
+          </table>
         </section>
       </div>
     </section>
