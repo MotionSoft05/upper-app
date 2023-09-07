@@ -220,7 +220,7 @@ function AltaEventos() {
           {/* Hora y Dias */}
           <div class="bg-gray-300 p-4">
             <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
-              Seleccione los Dias
+              Seleccione los días:
             </h4>
             <Datepicker
               useRange={false}
@@ -228,52 +228,15 @@ function AltaEventos() {
               onChange={handleValueChange}
             />
             <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
-              Seleccione las horas
+              Seleccione las horas:
             </h4>
-            <div className=" flex justify-between px-20">
-              <div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-gray-700 font-medium">
-                    Hora de Inicio:
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Horas:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="hourSelectorInicio" // Cambio de ID a "hourSelectorInicio"
-                    >
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Minutos:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="minuteSelectorInicio" // Cambio de ID a "minuteSelectorInicio"
-                    >
-                      {Array.from({ length: 60 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className="flex items-center space-x-4">
-              <div className="text-gray-700 font-medium">Hora de Final:</div>
+              <div className="text-gray-700 font-medium">Hora de Inicio:</div>
               <div className="relative">
                 <div className="text-gray-700 font-medium">Horas:</div>
                 <select
                   className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="hourSelectorFinal" // Cambio de ID a "hourSelectorFinal"
+                  id="hourSelectorInicio"
                 >
                   {Array.from({ length: 24 }, (_, i) => (
                     <option key={i} value={i.toString().padStart(2, "0")}>
@@ -287,7 +250,38 @@ function AltaEventos() {
                 <div className="text-gray-700 font-medium">Minutos:</div>
                 <select
                   className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                  id="minuteSelectorFinal" // Cambio de ID a "minuteSelectorFinal"
+                  id="minuteSelectorInicio"
+                >
+                  {Array.from({ length: 60 }, (_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+              </div>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-gray-700 font-medium">Hora de Final:</div>
+              <div className="relative">
+                <div className="text-gray-700 font-medium">Horas:</div>
+                <select
+                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="hourSelectorFinal"
+                >
+                  {Array.from({ length: 24 }, (_, i) => (
+                    <option key={i} value={i.toString().padStart(2, "0")}>
+                      {i.toString().padStart(2, "0")}
+                    </option>
+                  ))}
+                </select>
+                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+              </div>
+              <div className="relative">
+                <div className="text-gray-700 font-medium">Minutos:</div>
+                <select
+                  className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                  id="minuteSelectorFinal"
                 >
                   {Array.from({ length: 60 }, (_, i) => (
                     <option key={i} value={i.toString().padStart(2, "0")}>
