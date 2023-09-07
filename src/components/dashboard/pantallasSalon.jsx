@@ -48,7 +48,7 @@ function PantallasSalon() {
             </button>
             <button
               onClick={handleScreen1UseThis}
-              className="mt-2 bg-gray-300 hover.bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+              className="mt-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
             >
               Use This
             </button>
@@ -70,7 +70,7 @@ function PantallasSalon() {
             </button>
             <button
               onClick={handleScreen2UseThis}
-              className="mt-2 bg-gray-300 hover.bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+              className="mt-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
             >
               Use This
             </button>
