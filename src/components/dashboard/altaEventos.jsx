@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable react/jsx-no-comment-textnodes */
+import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
@@ -25,15 +27,39 @@ function AltaEventos() {
     endDate: new Date().setMonth(11),
   });
   const [alertaEnviada, setAlertaEnviada] = useState(false);
+  const [images, setImages] = useState([]);
 
-  const handleValueChange = (newValue) => {
-    console.log("newValue:", newValue);
-    setValue(newValue);
+  const handleImageUpload = (e) => {
+    const files = e.target.files;
+    const imageArray = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const url = event.target.result;
+        imageArray.push(url);
+        if (imageArray.length === files.length) {
+          setImages((prevImages) => [...prevImages, ...imageArray]);
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
   };
 
-  const [sliderRef] = useKeenSlider();
+  const deleteImage = (index) => {
+    setImages((prevImages) => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+  };
 
-  // Función para enviar los datos a Firebase
+  const handleValueChange = (newValue) => {
+    setValue(newValue);
+  };
   const enviarDatosAFirebase = () => {
     const nombreEvento = document.getElementById("floating_name").value;
     const tipoEvento = document.getElementById("floating_event").value;
@@ -48,20 +74,25 @@ function AltaEventos() {
     const fechaFinal = new Date(value.endDate);
     fechaFinal.setHours(horaFinal, minutoFinal, 0, 0);
 
+    console.log("Fecha de inicio:", fechaInicio);
+    console.log("Fecha de finalización:", fechaFinal);
+
+    const eventoData = {
+      nombreEvento,
+      tipoEvento,
+      lugar,
+      horaInicio,
+      minutoInicio,
+      horaFinal,
+      minutoFinal,
+      fechaInicio,
+      fechaFinal,
+    };
+
     firebase
       .firestore()
       .collection("eventos")
-      .add({
-        nombreEvento,
-        tipoEvento,
-        lugar,
-        horaInicio,
-        minutoInicio,
-        horaFinal,
-        minutoFinal,
-        fechaInicio,
-        fechaFinal, // Use the date object for the end date
-      })
+      .add(eventoData)
       .then(() => {
         // Limpiar campos después de enviar
         document.getElementById("floating_name").value = "";
@@ -73,10 +104,8 @@ function AltaEventos() {
         document.getElementById("hourSelectorFinal").value = "00";
         document.getElementById("minuteSelectorFinal").value = "00";
 
-        // Mostrar la alerta
         setAlertaEnviada(true);
 
-        // Ocultar la alerta después de 3 segundos
         setTimeout(() => {
           setAlertaEnviada(false);
         }, 6000);
@@ -85,6 +114,8 @@ function AltaEventos() {
         console.error("Error al enviar datos a Firebase:", error);
       });
   };
+
+  const [] = useKeenSlider();
 
   return (
     <section className="px-32">
@@ -240,17 +271,41 @@ function AltaEventos() {
             </form>
           </div>
           {/* Slider */}
-          <div class="bg-gray-300 p-4">
-            <div ref={sliderRef} className="keen-slider">
-              <div className="keen-slider__slide number-slide1">
-                <img src="/img/promo1.jpg" />
+          <div className="bg-gray-300 p-4">
+            <div className="mb-4">
+              <div className="grid grid-cols-3 gap-4">
+                {[0, 1, 2].map((index) => (
+                  <div key={index} className="col-span-1">
+                    <label
+                      htmlFor={`imageUpload${index}`}
+                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer"
+                    >
+                      +
+                    </label>
+                    <input
+                      id={`imageUpload${index}`}
+                      type="file"
+                      accept="image/*"
+                      className="hidden"
+                      onChange={handleImageUpload}
+                    />
+                    {images[index] && (
+                      <button
+                        onClick={() => deleteImage(index)}
+                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
+                      >
+                        x
+                      </button>
+                    )}
+                  </div>
+                ))}
               </div>
-              <div className="keen-slider__slide number-slide2">
-                <img src="/img/promo1.jpg" />
-              </div>
-              <div className="keen-slider__slide number-slide3">
-                <img src="/img/promo1.jpg" />
-              </div>
+              {images.map((imageUrl, index) => (
+                <div key={index}>
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={imageUrl} alt={`Imagen ${index + 1}`} />
+                </div>
+              ))}
             </div>
           </div>
         </section>
@@ -258,4 +313,5 @@ function AltaEventos() {
     </section>
   );
 }
+
 export default AltaEventos;
