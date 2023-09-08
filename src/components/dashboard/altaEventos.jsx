@@ -44,11 +44,10 @@ function AltaEventos() {
     const minutoFinal = document.getElementById("minuteSelectorFinal").value;
 
     const fechaInicio = new Date(value.startDate);
-    fechaInicio.setHours(horaInicio, minutoInicio, 0, 0); // Establecer los segundos en 0
+    fechaInicio.setHours(horaInicio, minutoInicio, 0, 0);
     const fechaFinal = new Date(value.endDate);
-    fechaFinal.setHours(horaFinal, minutoFinal, 0, 0); // Establecer los segundos en 0
+    fechaFinal.setHours(horaFinal, minutoFinal, 0, 0);
 
-    // Accede a la colección 'eventos' en Firestore y agrega un nuevo documento
     firebase
       .firestore()
       .collection("eventos")
@@ -193,7 +192,6 @@ function AltaEventos() {
                     </select>
                   </div>
                 </div>
-
                 <div className="flex items-center space-x-4">
                   <div className="text-gray-700 font-medium">
                     Hora de Final:
