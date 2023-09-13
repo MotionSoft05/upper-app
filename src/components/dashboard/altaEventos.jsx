@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import "keen-slider/keen-slider.min.css";
@@ -74,8 +72,13 @@ function AltaEventos() {
     const fechaFinal = new Date(value.endDate);
     fechaFinal.setHours(horaFinal, minutoFinal, 0, 0);
 
-    console.log("Fecha de inicio:", fechaInicio);
-    console.log("Fecha de finalización:", fechaFinal);
+    const diasSeleccionados = [];
+    const checkboxes = document.querySelectorAll(
+      'input[type="checkbox"]:checked'
+    );
+    checkboxes.forEach((checkbox) => {
+      diasSeleccionados.push(checkbox.value);
+    });
 
     const eventoData = {
       nombreEvento,
@@ -87,6 +90,7 @@ function AltaEventos() {
       minutoFinal,
       fechaInicio,
       fechaFinal,
+      diasSeleccionados,
     };
 
     firebase
@@ -189,6 +193,38 @@ function AltaEventos() {
                   value={value}
                   onChange={handleValueChange}
                 />
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
+                  Evento repetitivo:
+                </h4>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Lunes</label>
+                  <input type="checkbox" id="lunes" value="Lunes" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Martes</label>
+                  <input type="checkbox" id="martes" value="Martes" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Miércoles</label>
+                  <input type="checkbox" id="miercoles" value="Miércoles" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Jueves</label>
+                  <input type="checkbox" id="jueves" value="Jueves" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Viernes</label>
+                  <input type="checkbox" id="viernes" value="Viernes" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Sábado</label>
+                  <input type="checkbox" id="sabado" value="Sábado" />
+                </div>
+                <div className="flex items-center space-x-4">
+                  <label className="text-gray-700 font-medium">Domingo</label>
+                  <input type="checkbox" id="domingo" value="Domingo" />
+                </div>
+
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
                   Seleccione las horas:
                 </h4>
@@ -302,7 +338,6 @@ function AltaEventos() {
               </div>
               {images.map((imageUrl, index) => (
                 <div key={index}>
-                  // eslint-disable-next-line @next/next/no-img-element
                   <img src={imageUrl} alt={`Imagen ${index + 1}`} />
                 </div>
               ))}
