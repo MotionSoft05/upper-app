@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Datepicker from "react-tailwindcss-datepicker";
 import "keen-slider/keen-slider.min.css";
+import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
@@ -58,7 +59,26 @@ function AltaEventos() {
   const handleValueChange = (newValue) => {
     setValue(newValue);
   };
+
+  const [repeatingDays, setRepeatingDays] = useState({
+    domingo: false,
+    lunes: false,
+    martes: false,
+    miércoles: false,
+    jueves: false,
+    viernes: false,
+    sábado: false,
+  });
+
+  const handleRepeatingDayChange = (day) => {
+    setRepeatingDays({
+      ...repeatingDays,
+      [day]: !repeatingDays[day],
+    });
+  };
+
   const enviarDatosAFirebase = () => {
+    event.preventDefault();
     const nombreEvento = document.getElementById("floating_name").value;
     const tipoEvento = document.getElementById("floating_event").value;
     const lugar = document.getElementById("floating_floor").value;
@@ -72,14 +92,6 @@ function AltaEventos() {
     const fechaFinal = new Date(value.endDate);
     fechaFinal.setHours(horaFinal, minutoFinal, 0, 0);
 
-    const diasSeleccionados = [];
-    const checkboxes = document.querySelectorAll(
-      'input[type="checkbox"]:checked'
-    );
-    checkboxes.forEach((checkbox) => {
-      diasSeleccionados.push(checkbox.value);
-    });
-
     const eventoData = {
       nombreEvento,
       tipoEvento,
@@ -90,14 +102,18 @@ function AltaEventos() {
       minutoFinal,
       fechaInicio,
       fechaFinal,
-      diasSeleccionados,
     };
+
+    console.log("Datos del evento:", eventoData); // Imprimir los datos antes de enviarlos a Firebase
 
     firebase
       .firestore()
       .collection("eventos")
       .add(eventoData)
-      .then(() => {
+      .then((docRef) => {
+        // Document successfully added with a unique ID.
+        console.log("Evento agregado con ID: ", docRef.id);
+
         // Limpiar campos después de enviar
         document.getElementById("floating_name").value = "";
         document.getElementById("floating_event").value = "";
@@ -108,6 +124,11 @@ function AltaEventos() {
         document.getElementById("hourSelectorFinal").value = "00";
         document.getElementById("minuteSelectorFinal").value = "00";
 
+        setValue({
+          startDate: new Date(),
+          endDate: new Date().setMonth(11),
+        });
+
         setAlertaEnviada(true);
 
         setTimeout(() => {
@@ -116,6 +137,7 @@ function AltaEventos() {
       })
       .catch((error) => {
         console.error("Error al enviar datos a Firebase:", error);
+        // Handle the error, you can display an error message or take appropriate action.
       });
   };
 
@@ -193,38 +215,24 @@ function AltaEventos() {
                   value={value}
                   onChange={handleValueChange}
                 />
-                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
-                  Evento repetitivo:
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
+                  Seleccione los días de la semana:
                 </h4>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Lunes</label>
-                  <input type="checkbox" id="lunes" value="Lunes" />
+                <div className="grid grid-cols-4 gap-4">
+                  {Object.keys(repeatingDays).map((day, index) => (
+                    <div key={index} className="col-span-1">
+                      <label className="block text-sm font-medium text-gray-700">
+                        {day.charAt(0).toUpperCase() + day.slice(1)}
+                      </label>
+                      <input
+                        type="checkbox"
+                        className="w-5 h-5 text-blue-500 form-checkbox focus:ring-blue-500"
+                        checked={repeatingDays[day]}
+                        onChange={() => handleRepeatingDayChange(day)}
+                      />
+                    </div>
+                  ))}
                 </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Martes</label>
-                  <input type="checkbox" id="martes" value="Martes" />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Miércoles</label>
-                  <input type="checkbox" id="miercoles" value="Miércoles" />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Jueves</label>
-                  <input type="checkbox" id="jueves" value="Jueves" />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Viernes</label>
-                  <input type="checkbox" id="viernes" value="Viernes" />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Sábado</label>
-                  <input type="checkbox" id="sabado" value="Sábado" />
-                </div>
-                <div className="flex items-center space-x-4">
-                  <label className="text-gray-700 font-medium">Domingo</label>
-                  <input type="checkbox" id="domingo" value="Domingo" />
-                </div>
-
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
                   Seleccione las horas:
                 </h4>
