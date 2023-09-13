@@ -27,12 +27,22 @@ function ConsultaModEvento() {
           .firestore()
           .collection("eventos")
           .get();
-        const eventosData = eventosSnapshot.docs.map((doc) => ({
-          id: doc.id, // Aquí recuperamos el ID generado automáticamente
-          ...doc.data(),
-          fechaInicio: doc.data().fechaInicio.toDate(),
-          fechaFinal: doc.data().fechaFinal.toDate(),
-        }));
+        const eventosData = eventosSnapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id, // Aquí recuperamos el ID generado automáticamente
+            ...data,
+            fechaInicio:
+              data.fechaInicio instanceof firebase.firestore.Timestamp
+                ? data.fechaInicio.toDate()
+                : data.fechaInicio, // Use the value as-is if not a Timestamp
+            fechaFinal:
+              data.fechaFinal instanceof firebase.firestore.Timestamp
+                ? data.fechaFinal.toDate()
+                : data.fechaFinal, // Use the value as-is if not a Timestamp
+          };
+        });
+
         setEventos(eventosData);
       } catch (error) {
         console.error("Error al consultar eventos:", error);
@@ -57,12 +67,16 @@ function ConsultaModEvento() {
   };
 
   const convertirTimestampAFechaString = (timestamp) => {
-    const options = {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    };
-    return new Date(timestamp).toLocaleDateString(undefined, options);
+    if (timestamp instanceof Date) {
+      const options = {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      };
+      return new Date(timestamp).toLocaleDateString(undefined, options);
+    } else {
+      return timestamp; // Devolver el valor tal como está si no es un objeto Date
+    }
   };
 
   return (
