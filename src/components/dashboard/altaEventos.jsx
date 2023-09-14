@@ -82,53 +82,83 @@ function AltaEventos() {
     const nombreEvento = document.getElementById("floating_name").value;
     const tipoEvento = document.getElementById("floating_event").value;
     const lugar = document.getElementById("floating_floor").value;
-    const horaInicio = document.getElementById("hourSelectorInicio").value;
+    const horaInicialReal = document.getElementById("hourSelectorInicio").value;
     const minutoInicio = document.getElementById("minuteSelectorInicio").value;
-    const horaFinal = document.getElementById("hourSelectorFinal").value;
+    const horaFinalReal = document.getElementById("hourSelectorFinal").value;
     const minutoFinal = document.getElementById("minuteSelectorFinal").value;
+    const horaInicialSalon = document.getElementById(
+      "hourSelectorInicioSalon"
+    ).value;
+    const minutoInicialSalon = document.getElementById(
+      "minuteSelectorInicioSalon"
+    ).value;
+    const horaFinalSalon = document.getElementById(
+      "hourSelectorFinalSalon"
+    ).value;
+    const minutoFinalSalon = document.getElementById(
+      "minuteSelectorFinalSalon"
+    ).value;
 
     const fechaInicio = new Date(value.startDate);
-    fechaInicio.setHours(horaInicio, minutoInicio, 0, 0);
+    fechaInicio.setHours(horaInicialReal, minutoInicio);
     const fechaFinal = new Date(value.endDate);
-    fechaFinal.setHours(horaFinal, minutoFinal, 0, 0);
+    fechaFinal.setHours(horaFinalReal, minutoFinal);
+    const fechaInicioSalon = new Date(value.startDate);
+    fechaInicioSalon.setHours(horaInicialSalon, minutoInicialSalon);
+    const fechaFinalSalon = new Date(value.endDate);
+    fechaFinalSalon.setHours(horaFinalSalon, minutoFinalSalon);
+    const diasSeleccionados = Object.keys(repeatingDays).filter(
+      (day) => repeatingDays[day]
+    );
 
     const eventoData = {
       nombreEvento,
       tipoEvento,
       lugar,
-      horaInicio,
+      horaInicialReal,
       minutoInicio,
-      horaFinal,
+      horaFinalReal,
       minutoFinal,
+      horaInicialSalon,
+      minutoInicialSalon,
+      horaFinalSalon,
+      minutoFinalSalon,
       fechaInicio,
       fechaFinal,
+      fechaInicioSalon,
+      fechaFinalSalon,
+      diasSeleccionados,
     };
-
-    console.log("Datos del evento:", eventoData); // Imprimir los datos antes de enviarlos a Firebase
 
     firebase
       .firestore()
       .collection("eventos")
       .add(eventoData)
       .then((docRef) => {
-        // Document successfully added with a unique ID.
-        console.log("Evento agregado con ID: ", docRef.id);
-
-        // Limpiar campos después de enviar
         document.getElementById("floating_name").value = "";
         document.getElementById("floating_event").value = "";
         document.getElementById("floating_floor").value = "";
-
         document.getElementById("hourSelectorInicio").value = "00";
         document.getElementById("minuteSelectorInicio").value = "00";
         document.getElementById("hourSelectorFinal").value = "00";
         document.getElementById("minuteSelectorFinal").value = "00";
-
+        document.getElementById("hourSelectorInicioSalon").value = "00";
+        document.getElementById("minuteSelectorInicioSalon").value = "00";
+        document.getElementById("hourSelectorFinalSalon").value = "00";
+        document.getElementById("minuteSelectorFinalSalon").value = "00";
         setValue({
           startDate: new Date(),
           endDate: new Date().setMonth(11),
         });
-
+        setRepeatingDays({
+          lunes: false,
+          martes: false,
+          miércoles: false,
+          jueves: false,
+          viernes: false,
+          sábado: false,
+          domingo: false,
+        });
         setAlertaEnviada(true);
 
         setTimeout(() => {
@@ -137,7 +167,6 @@ function AltaEventos() {
       })
       .catch((error) => {
         console.error("Error al enviar datos a Firebase:", error);
-        // Handle the error, you can display an error message or take appropriate action.
       });
   };
 
@@ -216,7 +245,6 @@ function AltaEventos() {
                   onChange={handleValueChange}
                 />
                 <div className="mb-4"></div>{" "}
-                {/* Agregar margen inferior aquí */}
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
                   Seleccione los días:
                 </h4>
@@ -235,71 +263,192 @@ function AltaEventos() {
                     </div>
                   ))}
                 </div>
-                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 pt-2 ">
+                <div className="mb-4"></div>{" "}
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
                   Seleccione las horas:
                 </h4>
-                <div className="flex items-center space-x-4">
-                  <div className="text-gray-700 font-medium">
-                    Hora de Inicio:
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Horas:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="hourSelectorInicio"
-                    >
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Minutos:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="minuteSelectorInicio"
-                    >
-                      {Array.from({ length: 60 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
+                {/* Hora inicial y final real */}
+                <div className="bg-white p-3 sm:p-4 mb-3 sm:mb-4 rounded-lg shadow-md">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="relative mb-2 sm:mb-0">
+                      <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                        Hora inicial real:
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Horas:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="hourSelectorInicio"
+                          >
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Minutos:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="minuteSelectorInicio"
+                          >
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="relative">
+                      <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                        Hora final real:
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Horas:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="hourSelectorFinal"
+                          >
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Minutos:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="minuteSelectorFinal"
+                          >
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="flex items-center space-x-4">
-                  <div className="text-gray-700 font-medium">
-                    Hora de Final:
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Horas:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="hourSelectorFinal"
-                    >
-                      {Array.from({ length: 24 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
-                  </div>
-                  <div className="relative">
-                    <div className="text-gray-700 font-medium">Minutos:</div>
-                    <select
-                      className="block appearance-none w-20 bg-white border border-gray-300 text-gray-700 py-2 px-3 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
-                      id="minuteSelectorFinal"
-                    >
-                      {Array.from({ length: 60 }, (_, i) => (
-                        <option key={i} value={i.toString().padStart(2, "0")}>
-                          {i.toString().padStart(2, "0")}
-                        </option>
-                      ))}
-                    </select>
-                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"></div>
+                {/* Hora inicial y final del salón */}
+                <div className="bg-white p-3 sm:p-4 mb-3 sm:mb-4 rounded-lg shadow-md">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                    <div className="relative mb-2 sm:mb-0">
+                      <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                        Hora inicial salón:
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Horas:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="hourSelectorInicioSalon"
+                          >
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Minutos:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="minuteSelectorInicioSalon"
+                          >
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    {/* Hora final del salón */}
+                    <div className="relative">
+                      <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                        Hora final salón:
+                      </div>
+                      <div className="flex items-center space-x-1">
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            Horas:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="hourSelectorFinalSalon"
+                          >
+                            {Array.from({ length: 24 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                        <div className="relative">
+                          <div className="text-gray-600 font-medium text-xs sm:text-sm">
+                            {" "}
+                            Minutos:
+                          </div>
+                          <select
+                            className="block appearance-none w-14 sm:w-16 border border-gray-300 text-gray-700 py-1 sm:py-2 px-1 sm:px-2 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500 text-xs sm:text-sm"
+                            id="minuteSelectorFinalSalon"
+                          >
+                            {Array.from({ length: 60 }, (_, i) => (
+                              <option
+                                key={i}
+                                value={i.toString().padStart(2, "0")}
+                              >
+                                {i.toString().padStart(2, "0")}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <button
