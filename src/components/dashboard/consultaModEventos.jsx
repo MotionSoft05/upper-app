@@ -112,34 +112,25 @@ function ConsultaModEvento() {
             <thead>
               <tr>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  NÚMERO DE EVENTO
+                  Nº
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  NOMBRE DE EVENTO
+                  NOMBRE
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  TIPO DE EVENTO
+                  TIPO
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  LUGAR
+                  LUGAR/ES
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  FECHA DE INICIO
+                  FECHA/S
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  FECHA DE FINALIZACIÓN
+                  HORA REAL
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA INICIAL REAL
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA FINAL REAL
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA INICIAL SALÓN
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA FINAL SALÓN
+                  HORA SALÓN
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   REPETICIÓN DEL EVENTO
@@ -169,22 +160,30 @@ function ConsultaModEvento() {
                     {evento.lugar}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {convertirTimestampAFechaString(evento.fechaInicio)}
+                    <div className="mb-1">
+                      <strong>Inicio:</strong>{" "}
+                      {convertirTimestampAFechaString(evento.fechaInicio)}
+                    </div>
+                    <div>
+                      <strong>Final:</strong>{" "}
+                      {convertirTimestampAFechaString(evento.fechaFinal)}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {convertirTimestampAFechaString(evento.fechaFinal)}
+                    <div className="mb-1">
+                      <strong>Inicio:</strong> {evento.horaInicialReal}
+                    </div>
+                    <div>
+                      <strong>Final:</strong> {evento.horaFinalReal}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaInicialreal}:{evento.minutoInicio}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaFinalreal}:{evento.minutoFinal}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaInicialSalon}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaFinalSalon}
+                    <div className="mb-1">
+                      <strong>Inicio:</strong> {evento.horaInicialSalon}
+                    </div>
+                    <div>
+                      <strong>Final:</strong> {evento.horaFinalSalon}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {convertirDiasSeleccionados(evento.diasSeleccionados)}
