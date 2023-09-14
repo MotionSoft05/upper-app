@@ -42,7 +42,6 @@ function ConsultaModEvento() {
                 : data.fechaFinal, // Use the value as-is if not a Timestamp
           };
         });
-
         setEventos(eventosData);
       } catch (error) {
         console.error("Error al consultar eventos:", error);
@@ -77,6 +76,19 @@ function ConsultaModEvento() {
     } else {
       return timestamp; // Devolver el valor tal como está si no es un objeto Date
     }
+  };
+
+  const convertirDiasSeleccionados = (diasSeleccionados) => {
+    const dias = {
+      lunes: "L",
+      martes: "MA",
+      miércoles: "MI",
+      jueves: "J",
+      viernes: "V",
+      sábado: "S",
+      domingo: "D",
+    };
+    return diasSeleccionados.map((dia) => dias[dia]).join(", ");
   };
 
   return (
@@ -114,10 +126,13 @@ function ConsultaModEvento() {
                   FECHA DE FINALIZACIÓN
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA DE INICIO
+                  HORA INICIAL REAL
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA DE FINALIZACIÓN
+                  HORA FINAL REAL
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  REPETICIÓN DEL EVENTO
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ID DEL EVENTO
@@ -150,10 +165,13 @@ function ConsultaModEvento() {
                     {convertirTimestampAFechaString(evento.fechaFinal)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaInicio}:{evento.minutoInicio}
+                    {evento.horaInicialreal}:{evento.minutoInicio}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.horaFinal}:{evento.minutoFinal}
+                    {evento.horaFinalreal}:{evento.minutoFinal}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {convertirDiasSeleccionados(evento.diasSeleccionados)}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>{" "}
                   <td className="px-6 py-4 whitespace-nowrap">
