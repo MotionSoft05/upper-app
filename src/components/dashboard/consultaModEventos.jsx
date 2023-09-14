@@ -79,16 +79,20 @@ function ConsultaModEvento() {
   };
 
   const convertirDiasSeleccionados = (diasSeleccionados) => {
-    const dias = {
-      lunes: "L",
-      martes: "MA",
-      miércoles: "MI",
-      jueves: "J",
-      viernes: "V",
-      sábado: "S",
-      domingo: "D",
-    };
-    return diasSeleccionados.map((dia) => dias[dia]).join(", ");
+    if (Array.isArray(diasSeleccionados)) {
+      const dias = {
+        lunes: "L",
+        martes: "MA",
+        miércoles: "MI",
+        jueves: "J",
+        viernes: "V",
+        sábado: "S",
+        domingo: "D",
+      };
+      return diasSeleccionados.map((dia) => dias[dia]).join(", ");
+    } else {
+      return ""; // Otra opción es devolver una cadena vacía u otro valor predeterminado
+    }
   };
 
   return (
@@ -132,6 +136,12 @@ function ConsultaModEvento() {
                   HORA FINAL REAL
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  HORA INICIAL SALÓN
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  HORA FINAL SALÓN
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   REPETICIÓN DEL EVENTO
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -169,6 +179,12 @@ function ConsultaModEvento() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {evento.horaFinalreal}:{evento.minutoFinal}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.horaInicialSalon}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {evento.horaFinalSalon}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {convertirDiasSeleccionados(evento.diasSeleccionados)}
