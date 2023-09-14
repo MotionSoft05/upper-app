@@ -82,31 +82,39 @@ function AltaEventos() {
     const nombreEvento = document.getElementById("floating_name").value;
     const tipoEvento = document.getElementById("floating_event").value;
     const lugar = document.getElementById("floating_floor").value;
-    const horaInicialReal = document.getElementById("hourSelectorInicio").value;
-    const minutoInicio = document.getElementById("minuteSelectorInicio").value;
-    const horaFinalReal = document.getElementById("hourSelectorFinal").value;
-    const minutoFinal = document.getElementById("minuteSelectorFinal").value;
-    const horaInicialSalon = document.getElementById(
-      "hourSelectorInicioSalon"
-    ).value;
-    const minutoInicialSalon = document.getElementById(
-      "minuteSelectorInicioSalon"
-    ).value;
-    const horaFinalSalon = document.getElementById(
-      "hourSelectorFinalSalon"
-    ).value;
-    const minutoFinalSalon = document.getElementById(
-      "minuteSelectorFinalSalon"
-    ).value;
+    const horaInicialReal = `${
+      document.getElementById("hourSelectorInicio").value
+    }:${document.getElementById("minuteSelectorInicio").value}`;
+    const horaFinalReal = `${
+      document.getElementById("hourSelectorFinal").value
+    }:${document.getElementById("minuteSelectorFinal").value}`;
+    const horaInicialSalon = `${
+      document.getElementById("hourSelectorInicioSalon").value
+    }:${document.getElementById("minuteSelectorInicioSalon").value}`;
+    const horaFinalSalon = `${
+      document.getElementById("hourSelectorFinalSalon").value
+    }:${document.getElementById("minuteSelectorFinalSalon").value}`;
 
     const fechaInicio = new Date(value.startDate);
-    fechaInicio.setHours(horaInicialReal, minutoInicio);
+    fechaInicio.setHours(
+      horaInicialReal.split(":")[0],
+      horaInicialReal.split(":")[1]
+    );
     const fechaFinal = new Date(value.endDate);
-    fechaFinal.setHours(horaFinalReal, minutoFinal);
+    fechaFinal.setHours(
+      horaFinalReal.split(":")[0],
+      horaFinalReal.split(":")[1]
+    );
     const fechaInicioSalon = new Date(value.startDate);
-    fechaInicioSalon.setHours(horaInicialSalon, minutoInicialSalon);
+    fechaInicioSalon.setHours(
+      horaInicialSalon.split(":")[0],
+      horaInicialSalon.split(":")[1]
+    );
     const fechaFinalSalon = new Date(value.endDate);
-    fechaFinalSalon.setHours(horaFinalSalon, minutoFinalSalon);
+    fechaFinalSalon.setHours(
+      horaFinalSalon.split(":")[0],
+      horaFinalSalon.split(":")[1]
+    );
     const diasSeleccionados = Object.keys(repeatingDays).filter(
       (day) => repeatingDays[day]
     );
@@ -116,13 +124,9 @@ function AltaEventos() {
       tipoEvento,
       lugar,
       horaInicialReal,
-      minutoInicio,
       horaFinalReal,
-      minutoFinal,
       horaInicialSalon,
-      minutoInicialSalon,
       horaFinalSalon,
-      minutoFinalSalon,
       fechaInicio,
       fechaFinal,
       fechaInicioSalon,
