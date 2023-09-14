@@ -61,13 +61,13 @@ function AltaEventos() {
   };
 
   const [repeatingDays, setRepeatingDays] = useState({
-    domingo: false,
     lunes: false,
     martes: false,
     miércoles: false,
     jueves: false,
     viernes: false,
     sábado: false,
+    domingo: false,
   });
 
   const handleRepeatingDayChange = (day) => {
@@ -208,28 +208,30 @@ function AltaEventos() {
 
               <div class="bg-gray-300 p-4">
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
-                  Seleccione los días:
+                  Seleccione la fecha:
                 </h4>
                 <Datepicker
                   useRange={false}
                   value={value}
                   onChange={handleValueChange}
                 />
+                <div className="mb-4"></div>{" "}
+                {/* Agregar margen inferior aquí */}
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
-                  Seleccione los días de la semana:
+                  Seleccione los días:
                 </h4>
                 <div className="grid grid-cols-4 gap-4">
                   {Object.keys(repeatingDays).map((day, index) => (
-                    <div key={index} className="col-span-1">
-                      <label className="block text-sm font-medium text-gray-700">
-                        {day.charAt(0).toUpperCase() + day.slice(1)}
-                      </label>
+                    <div key={index} className="text-center">
                       <input
                         type="checkbox"
                         className="w-5 h-5 text-blue-500 form-checkbox focus:ring-blue-500"
                         checked={repeatingDays[day]}
                         onChange={() => handleRepeatingDayChange(day)}
                       />
+                      <label className="block text-xs text-gray-700">
+                        {day.charAt(0).toUpperCase() + day.slice(1)}
+                      </label>
                     </div>
                   ))}
                 </div>
