@@ -18,6 +18,8 @@ if (!firebase.apps.length) {
 
 function ConsultaModEvento() {
   const [eventos, setEventos] = useState([]);
+  const [modoEdicion, setModoEdicion] = useState(false);
+  const [eventoEditado, setEventoEditado] = useState(null);
 
   useEffect(() => {
     // Consultar la colección 'eventos' en Firebase
@@ -65,6 +67,34 @@ function ConsultaModEvento() {
     }
   };
 
+  const iniciarEdicion = (evento) => {
+    setModoEdicion(true); // Activamos el modo de edición
+    setEventoEditado({ ...evento }); // Cargamos el evento actual en el formulario de edición
+  };
+
+  const guardarCambios = async () => {
+    try {
+      // Actualiza el evento en Firebase
+      await firebase
+        .firestore()
+        .collection("eventos")
+        .doc(eventoEditado.id)
+        .update(eventoEditado);
+
+      // Actualiza la lista de eventos localmente
+      const eventosActualizados = eventos.map((evento) =>
+        evento.id === eventoEditado.id ? eventoEditado : evento
+      );
+      setEventos(eventosActualizados);
+
+      // Sal del modo de edición
+      setModoEdicion(false);
+      setEventoEditado(null);
+    } catch (error) {
+      console.error("Error al guardar cambios:", error);
+    }
+  };
+
   const convertirTimestampAFechaString = (timestamp) => {
     if (timestamp instanceof Date) {
       const options = {
@@ -108,7 +138,7 @@ function ConsultaModEvento() {
           <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
             Lista de Eventos
           </h4>
-          <table className="min-w-full">
+          <table className="min-w-full table-fixed">
             <thead>
               <tr>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -151,48 +181,211 @@ function ConsultaModEvento() {
                 >
                   <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.nombreEvento}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <input
+                        type="text"
+                        value={eventoEditado.nombreEvento}
+                        onChange={(e) =>
+                          setEventoEditado({
+                            ...eventoEditado,
+                            nombreEvento: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      evento.nombreEvento
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.tipoEvento}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <input
+                        type="text"
+                        value={eventoEditado.tipoEvento}
+                        onChange={(e) =>
+                          setEventoEditado({
+                            ...eventoEditado,
+                            tipoEvento: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      evento.tipoEvento
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {evento.lugar}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <input
+                        type="text"
+                        value={eventoEditado.lugar}
+                        onChange={(e) =>
+                          setEventoEditado({
+                            ...eventoEditado,
+                            lugar: e.target.value,
+                          })
+                        }
+                      />
+                    ) : (
+                      evento.lugar
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="mb-1">
-                      <strong>Inicio:</strong>{" "}
-                      {convertirTimestampAFechaString(evento.fechaInicio)}
-                    </div>
-                    <div>
-                      <strong>Final:</strong>{" "}
-                      {convertirTimestampAFechaString(evento.fechaFinal)}
-                    </div>
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Inicio:</strong>{" "}
+                        <input
+                          type="date"
+                          value={eventoEditado.fechaInicio}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              fechaInicio: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Inicio:</strong>{" "}
+                        {convertirTimestampAFechaString(evento.fechaInicio)}
+                      </div>
+                    )}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Final:</strong>{" "}
+                        <input
+                          type="date"
+                          value={eventoEditado.fechaFinal}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              fechaFinal: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Final:</strong>{" "}
+                        {convertirTimestampAFechaString(evento.fechaFinal)}
+                      </div>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="mb-1">
-                      <strong>Inicio:</strong> {evento.horaInicialReal}
-                    </div>
-                    <div>
-                      <strong>Final:</strong> {evento.horaFinalReal}
-                    </div>
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Inicio:</strong>{" "}
+                        <input
+                          type="time"
+                          value={eventoEditado.horaInicialReal}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              horaInicialReal: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Inicio:</strong> {evento.horaInicialReal}
+                      </div>
+                    )}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Final:</strong>{" "}
+                        <input
+                          type="time"
+                          value={eventoEditado.horaFinalReal}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              horaFinalReal: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Final:</strong> {evento.horaFinalReal}
+                      </div>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="mb-1">
-                      <strong>Inicio:</strong> {evento.horaInicialSalon}
-                    </div>
-                    <div>
-                      <strong>Final:</strong> {evento.horaFinalSalon}
-                    </div>
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Inicio:</strong>{" "}
+                        <input
+                          type="time"
+                          value={eventoEditado.horaInicialSalon}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              horaInicialSalon: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Inicio:</strong> {evento.horaInicialSalon}
+                      </div>
+                    )}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <div>
+                        <strong>Final:</strong>{" "}
+                        <input
+                          type="time"
+                          value={eventoEditado.horaFinalSalon}
+                          onChange={(e) =>
+                            setEventoEditado({
+                              ...eventoEditado,
+                              horaFinalSalon: e.target.value,
+                            })
+                          }
+                        />
+                      </div>
+                    ) : (
+                      <div>
+                        <strong>Final:</strong> {evento.horaFinalSalon}
+                      </div>
+                    )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {convertirDiasSeleccionados(evento.diasSeleccionados)}
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <input
+                        type="text"
+                        value={eventoEditado.diasSeleccionados.join(", ")}
+                        onChange={(e) =>
+                          setEventoEditado({
+                            ...eventoEditado,
+                            diasSeleccionados: e.target.value.split(", "),
+                          })
+                        }
+                      />
+                    ) : (
+                      convertirDiasSeleccionados(evento.diasSeleccionados)
+                    )}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>{" "}
+                  <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
+                    {modoEdicion && evento.id === eventoEditado.id ? (
+                      <button
+                        onClick={guardarCambios}
+                        className="text-green-600 hover:text-green-800"
+                      >
+                        Guardar Cambios
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => iniciarEdicion(evento)}
+                        className="text-blue-600 hover:text-blue-800"
+                      >
+                        Editar
+                      </button>
+                    )}
                     <button
                       onClick={() => eliminarEvento(evento.id)}
-                      className="text-red-600 hover:text-red-800"
+                      className="text-red-600 hover:text-red-800 ml-2"
                     >
                       Eliminar
                     </button>
