@@ -189,6 +189,15 @@ function PantallasSalon() {
               </div>
             </div>
             <div>
+              <label className="text-white dark:text-gray-200">Logo</label>
+              <div className="flex items-center">
+                <input
+                  class="block w-full text-sm  border rounded-lg cursor-pointer  text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  type="file"
+                />
+              </div>
+            </div>
+            <div>
               <label className="text-white dark:text-gray-200">
                 Estilo de texto
               </label>
@@ -204,9 +213,15 @@ function PantallasSalon() {
           <div className="flex justify-end mt-6">
             <button
               onClick={handlePreviewClick}
-              className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
+              className=" mx-5 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
             >
               Vista Previa
+            </button>
+            <button
+              onClick={handlePreviewClick}
+              className="px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
+            >
+              Guardar
             </button>
           </div>
         </section>
