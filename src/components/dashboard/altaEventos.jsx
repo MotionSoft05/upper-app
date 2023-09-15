@@ -173,8 +173,31 @@ function AltaEventos() {
         console.error("Error al enviar datos a Firebase:", error);
       });
   };
-
   const [] = useKeenSlider();
+
+  const [selectedDevices, setSelectedDevices] = useState([]);
+  const deviceOptions = [
+    "Dispositivo 1",
+    "Dispositivo 2",
+    "Dispositivo 3",
+    "Dispositivo 4",
+    "Dispositivo 5",
+    "Dispositivo 6",
+    "Dispositivo 7",
+  ];
+
+  const handleDeviceChange = (e) => {
+    const selectedDevice = e.target.value;
+    setSelectedDevices((prevDevices) => {
+      if (prevDevices.includes(selectedDevice)) {
+        // Remove device if already selected
+        return prevDevices.filter((device) => device !== selectedDevice);
+      } else {
+        // Add device to selected devices
+        return [...prevDevices, selectedDevice];
+      }
+    });
+  };
 
   return (
     <section className="px-32">
@@ -185,7 +208,6 @@ function AltaEventos() {
           </h1>
         </div>
         <section class="grid grid-cols-2 gap-4">
-          {/* Detalles evento */}
           <div class="bg-gray-300 p-4">
             <form>
               <div class="relative z-0 w-full mb-6 group">
@@ -204,7 +226,6 @@ function AltaEventos() {
                   Nombre del evento
                 </label>
               </div>
-
               <div class="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
@@ -221,7 +242,6 @@ function AltaEventos() {
                   Tipo de evento
                 </label>
               </div>
-
               <div class="relative z-0 w-full mb-6 group">
                 <input
                   type="text"
@@ -238,7 +258,6 @@ function AltaEventos() {
                   Lugar
                 </label>
               </div>
-
               <div class="bg-gray-300 p-4">
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
                   Seleccione la fecha:
@@ -271,7 +290,6 @@ function AltaEventos() {
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900 ">
                   Seleccione las horas:
                 </h4>
-                {/* Hora inicial y final real */}
                 <div className="bg-white p-3 sm:p-4 mb-3 sm:mb-4 rounded-lg shadow-md">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="relative mb-2 sm:mb-0">
@@ -362,7 +380,6 @@ function AltaEventos() {
                     </div>
                   </div>
                 </div>
-                {/* Hora inicial y final del salón */}
                 <div className="bg-white p-3 sm:p-4 mb-3 sm:mb-4 rounded-lg shadow-md">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                     <div className="relative mb-2 sm:mb-0">
@@ -408,7 +425,6 @@ function AltaEventos() {
                         </div>
                       </div>
                     </div>
-                    {/* Hora final del salón */}
                     <div className="relative">
                       <div className="text-gray-600 font-medium text-xs sm:text-sm">
                         Hora final salón:
@@ -469,43 +485,94 @@ function AltaEventos() {
               </div>
             </form>
           </div>
-          {/* Slider */}
-          <div className="bg-gray-300 p-4">
-            <div className="mb-4">
-              <div className="grid grid-cols-3 gap-4">
-                {[0, 1, 2].map((index) => (
-                  <div key={index} className="col-span-1">
-                    <label
-                      htmlFor={`imageUpload${index}`}
-                      className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                    >
-                      +
-                    </label>
-                    <input
-                      id={`imageUpload${index}`}
-                      type="file"
-                      accept="image/*"
-                      className="hidden"
-                      onChange={handleImageUpload}
-                    />
-                    {images[index] && (
-                      <button
-                        onClick={() => deleteImage(index)}
-                        className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
+          <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Sección para cargar imágenes */}
+            <div className="bg-gray-300 p-4 col-span-2">
+              <div className="mb-4">
+                <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
+                  Subir Imágenes:
+                </h4>
+                <div className="grid grid-cols-3 gap-4">
+                  {[0, 1, 2].map((index) => (
+                    <div key={index} className="col-span-1">
+                      <label
+                        htmlFor={`imageUpload${index}`}
+                        className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded cursor-pointer"
                       >
-                        x
-                      </button>
-                    )}
-                  </div>
-                ))}
-              </div>
-              {images.map((imageUrl, index) => (
-                <div key={index}>
-                  <img src={imageUrl} alt={`Imagen ${index + 1}`} />
+                        +
+                      </label>
+                      <input
+                        id={`imageUpload${index}`}
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={handleImageUpload}
+                      />
+                      {images[index] && (
+                        <button
+                          onClick={() => deleteImage(index)}
+                          className="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-2"
+                        >
+                          x
+                        </button>
+                      )}
+                    </div>
+                  ))}
                 </div>
-              ))}
+                <div className="grid grid-cols-3 gap-4">
+                  {images.map((imageUrl, index) => (
+                    <div
+                      key={index}
+                      className="w-40 h-40 flex items-center justify-center"
+                    >
+                      <img
+                        src={imageUrl}
+                        alt={`Imagen ${index + 1}`}
+                        className="max-w-full max-h-full"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+
+            {/* Nueva fila horizontal para Seleccionar Dispositivos */}
+            <div className="bg-gray-300 p-4 col-span-2">
+              <div className="mb-4">
+                <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
+                  Seleccionar Dispositivos:
+                </h4>
+                <div className="mb-4">
+                  {deviceOptions.map((device, index) => (
+                    <label key={index} className="block mb-2">
+                      <input
+                        type="checkbox"
+                        value={device}
+                        checked={selectedDevices.includes(device)}
+                        onChange={handleDeviceChange}
+                        className="mr-2"
+                      />
+                      {device}
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Mostrar dispositivos seleccionados */}
+              {selectedDevices.length > 0 && (
+                <div>
+                  <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
+                    Se muestra en:
+                  </h4>
+                  <ul>
+                    {selectedDevices.map((device, index) => (
+                      <li key={index}>{device}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </section>
         </section>
       </div>
     </section>
