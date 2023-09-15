@@ -9,6 +9,8 @@ function PantallasDirectorio() {
   const [fontColor, setFontColor] = useState("#000000");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontColorPicker, setShowFontColorPicker] = useState(false);
+  const [weatherURL, setWeatherURL] = useState("");
+  const [calendarEventURL, setCalendarEventURL] = useState("");
 
   const fontStyleOptions = [
     { value: "Arial", label: "Arial" },
@@ -64,6 +66,7 @@ function PantallasDirectorio() {
   const handlePreviewClick = () => {
     // Lógica para la vista previa del diseño con las opciones seleccionadas.
   };
+
   return (
     <section className="px-32">
       <div>
@@ -191,7 +194,7 @@ function PantallasDirectorio() {
               <label className="text-white dark:text-gray-200">Logo</label>
               <div className="flex items-center">
                 <input
-                  class="block w-full text-sm  border rounded-lg cursor-pointer  text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                   type="file"
                 />
               </div>
@@ -212,7 +215,7 @@ function PantallasDirectorio() {
           <div className="flex justify-end mt-6">
             <button
               onClick={handlePreviewClick}
-              className=" mx-5 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
+              className="mx-5 px-6 py-2 leading-5 text-white transition-colors duration-200 transform bg-pink-500 rounded-md hover:bg-pink-700 focus:outline-none focus:bg-gray-600"
             >
               Vista Previa
             </button>
@@ -224,8 +227,42 @@ function PantallasDirectorio() {
             </button>
           </div>
         </section>
+
+        {/* Sección para URL del clima y eventos del calendario */}
+        <section className="max-w-4xl p-6 mx-auto rounded-md shadow-md bg-gray-800 mt-8">
+          <h1 className="text-xl font-bold text-white capitalize dark:text-white">
+            Directorio de Eventos
+          </h1>
+          <div className="mt-4">
+            <div className="mb-4">
+              <label className="text-white dark:text-gray-200">
+                URL del Clima
+              </label>
+              <input
+                className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                type="url"
+                value={weatherURL}
+                onChange={(e) => setWeatherURL(e.target.value)}
+                placeholder="Ingrese la URL del clima"
+              />
+            </div>
+            <div>
+              <label className="text-white dark:text-gray-200">
+                Agregar Evento al Calendario
+              </label>
+              <input
+                className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                type="url"
+                value={calendarEventURL}
+                onChange={(e) => setCalendarEventURL(e.target.value)}
+                placeholder="Ingrese la URL para agregar un evento al calendario"
+              />
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   );
 }
+
 export default PantallasDirectorio;
