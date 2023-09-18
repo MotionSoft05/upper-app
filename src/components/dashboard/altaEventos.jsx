@@ -536,44 +536,42 @@ function AltaEventos() {
               </div>
             </div>
 
-            {/* Nueva fila horizontal para Seleccionar Dispositivos */}
-            <div className="bg-gray-300 p-4 col-span-2 flex flex-direction-row">
-              <div className="mb-4">
-                <h4 className="mb-2 text-2x1 leading-none tracking-tight text-gray-900">
-                  Seleccionar Dispositivos:
-                </h4>
+            <section className="grid grid-cols-2 gap-4">
+              {/* Sección "Seleccionar Dispositivos" */}
+              <div className="bg-gray-300 p-4">
                 <div className="mb-4">
-                  {deviceOptions.map((device, index) => (
-                    <label key={index} className="block mb-2">
-                      <input
-                        type="checkbox"
-                        value={device}
-                        checked={selectedDevices.includes(device)}
-                        onChange={handleDeviceChange}
-                        className="mr-2"
-                      />
-                      {device}
-                    </label>
-                  ))}
+                  <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
+                    Seleccionar Dispositivos:
+                  </h4>
+                  <div className="mb-4">
+                    {deviceOptions.map((device, index) => (
+                      <label key={index} className="block mb-2">
+                        <input
+                          type="checkbox"
+                          value={device}
+                          checked={selectedDevices.includes(device)}
+                          onChange={handleDeviceChange}
+                          className="mr-2"
+                        />
+                        {device}
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
 
-              {/* Mostrar dispositivos seleccionados */}
-              {selectedDevices.length > 0 && (
-                <section className="grid grid-cols-2 gap-4">
-                  <div className="bg-gray-300 p-4 col-span-2 flex flex-direction-row">
-                    <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
-                      Se muestra en:
-                    </h4>
-                    <ul>
-                      {selectedDevices.map((device, index) => (
-                        <li key={index}>{device}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </section>
-              )}
-            </div>
+              {/* Sección "Se muestra en:" (siempre visible) */}
+              <div className="bg-gray-300 p-4">
+                <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
+                  Se muestra en:
+                </h4>
+                <ul>
+                  {selectedDevices.map((device, index) => (
+                    <li key={index}>{device}</li>
+                  ))}
+                </ul>
+              </div>
+            </section>
           </section>
         </section>
       </div>
