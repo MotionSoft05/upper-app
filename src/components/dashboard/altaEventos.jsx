@@ -190,10 +190,8 @@ function AltaEventos() {
     const selectedDevice = e.target.value;
     setSelectedDevices((prevDevices) => {
       if (prevDevices.includes(selectedDevice)) {
-        // Remove device if already selected
         return prevDevices.filter((device) => device !== selectedDevice);
       } else {
-        // Add device to selected devices
         return [...prevDevices, selectedDevice];
       }
     });
@@ -486,7 +484,6 @@ function AltaEventos() {
             </form>
           </div>
           <section className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {/* Sección para cargar imágenes */}
             <div className="bg-gray-300 p-4 col-span-2">
               <div className="mb-4">
                 <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
@@ -535,11 +532,8 @@ function AltaEventos() {
                 </div>
               </div>
             </div>
-
-            {/* Sección "Seleccionar Dispositivos" */}
             <div className="bg-gray-300 p-4 col-span-2">
               {" "}
-              {/* Cambiado a col-span-2 para ocupar el mismo ancho */}
               <div className="mb-4">
                 <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
                   Seleccionar Dispositivos:
@@ -560,11 +554,8 @@ function AltaEventos() {
                 </div>
               </div>
             </div>
-
-            {/* Sección "Se muestra en:" */}
             <div className="bg-gray-300 p-4 col-span-2">
               {" "}
-              {/* Cambiado a col-span-2 para ocupar el mismo ancho */}
               <h4 className="mb-2 text-2xl leading-none tracking-tight text-gray-900">
                 Se muestra en:
               </h4>
