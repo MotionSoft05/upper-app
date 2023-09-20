@@ -5,6 +5,11 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
+import "firebase/compat/storage";
+
+// Initialize Firebase Storage
+const storage = firebase.storage();
+const storageRef = storage.ref();
 
 const firebaseConfig = {
   apiKey: "AIzaSyCzD--npY_6fZcXH-8CzBV7UGzPBqg85y8",
@@ -28,7 +33,7 @@ function AltaEventos() {
   const [alertaEnviada, setAlertaEnviada] = useState(false);
   const [images, setImages] = useState([]);
 
-  const handleImageUpload = (e) => {
+  const handleImageUpload = async (e) => {
     const files = e.target.files;
     const imageArray = [];
 
@@ -36,11 +41,34 @@ function AltaEventos() {
       const file = files[i];
       const reader = new FileReader();
 
-      reader.onload = (event) => {
+      reader.onload = async (event) => {
         const url = event.target.result;
         imageArray.push(url);
         if (imageArray.length === files.length) {
           setImages((prevImages) => [...prevImages, ...imageArray]);
+
+          // Subir imágenes a Firebase Storage y guardar las referencias en Firestore
+          const imageRefs = [];
+          for (const file of files) {
+            const imageRef = storageRef.child(file.name);
+            await imageRef.put(file);
+            const imageUrl = await imageRef.getDownloadURL();
+            imageRefs.push(imageUrl);
+          }
+
+          // Guardar las referencias en Firestore
+          firestore
+            .collection("eventos")
+            .add({
+              // otros datos...
+              images: imageRefs,
+            })
+            .then((docRef) => {
+              // Resto del código
+            })
+            .catch((error) => {
+              console.error("Error al enviar datos a Firebase:", error);
+            });
         }
       };
 
@@ -132,6 +160,8 @@ function AltaEventos() {
       fechaInicioSalon,
       fechaFinalSalon,
       diasSeleccionados,
+      images,
+      selectedDevices,
     };
 
     firebase
@@ -164,6 +194,8 @@ function AltaEventos() {
           domingo: false,
         });
         setAlertaEnviada(true);
+        setImages([]);
+        setSelectedDevices([]);
 
         setTimeout(() => {
           setAlertaEnviada(false);
