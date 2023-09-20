@@ -5,7 +5,6 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-import "firebase/compat/storage";
 
 // Initialize Firebase Storage
 const storage = firebase.storage();
