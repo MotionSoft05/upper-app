@@ -160,8 +160,6 @@ function AltaEventos() {
       fechaInicioSalon,
       fechaFinalSalon,
       diasSeleccionados,
-      images,
-      selectedDevices,
     };
 
     firebase
