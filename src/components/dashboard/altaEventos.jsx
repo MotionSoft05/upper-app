@@ -5,10 +5,8 @@ import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/firestore";
-
-// Initialize Firebase Storage
-const storage = firebase.storage();
-const storageRef = storage.ref();
+import { initializeApp } from "firebase/app";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCzD--npY_6fZcXH-8CzBV7UGzPBqg85y8",
@@ -20,9 +18,8 @@ const firebaseConfig = {
   measurementId: "G-QTFQ55YY5D",
 };
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
-}
+const app = initializeApp(firebaseConfig);
+const storage = getStorage(app);
 
 function AltaEventos() {
   const [value, setValue] = useState({
@@ -34,44 +31,19 @@ function AltaEventos() {
 
   const handleImageUpload = async (e) => {
     const files = e.target.files;
-    const imageArray = [];
 
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
-      const reader = new FileReader();
+      const imageRef = ref(storage, `imagenes/${file.name}`);
 
-      reader.onload = async (event) => {
-        const url = event.target.result;
-        imageArray.push(url);
-        if (imageArray.length === files.length) {
-          setImages((prevImages) => [...prevImages, ...imageArray]);
+      try {
+        await uploadBytes(imageRef, file);
+        const imageUrl = await getDownloadURL(imageRef);
 
-          // Subir imágenes a Firebase Storage y guardar las referencias en Firestore
-          const imageRefs = [];
-          for (const file of files) {
-            const imageRef = storageRef.child(file.name);
-            await imageRef.put(file);
-            const imageUrl = await imageRef.getDownloadURL();
-            imageRefs.push(imageUrl);
-          }
-
-          // Guardar las referencias en Firestore
-          firestore
-            .collection("eventos")
-            .add({
-              // otros datos...
-              images: imageRefs,
-            })
-            .then((docRef) => {
-              // Resto del código
-            })
-            .catch((error) => {
-              console.error("Error al enviar datos a Firebase:", error);
-            });
-        }
-      };
-
-      reader.readAsDataURL(file);
+        setImages((prevImages) => [...prevImages, imageUrl]);
+      } catch (error) {
+        console.error("Error al subir imagen:", error);
+      }
     }
   };
 
@@ -159,6 +131,7 @@ function AltaEventos() {
       fechaInicioSalon,
       fechaFinalSalon,
       diasSeleccionados,
+      images,
     };
 
     firebase
@@ -191,8 +164,8 @@ function AltaEventos() {
           domingo: false,
         });
         setAlertaEnviada(true);
-        setImages([]);
         setSelectedDevices([]);
+        setSelectedImages([]);
 
         setTimeout(() => {
           setAlertaEnviada(false);
