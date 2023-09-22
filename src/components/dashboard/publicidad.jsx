@@ -66,14 +66,15 @@ function Publicidad() {
     }
   };
 
-  const renderCamposImagenes = (imagenes, tiempos, tipo) => {
+  const renderCamposImagenes = (imagenes, tiempos, tipo, titulo) => {
     return (
-      <div>
+      <div className="mb-8">
+        <h3 className="text-xl font-semibold text-gray-800">{titulo}</h3>
         {imagenes.map((imagen, index) => (
           <div key={index} className="mb-8">
             <h3 className="text-xl font-semibold text-gray-800">
-              {tipo === "salon" ? "Salón de Eventos" : "Directorio"} - Imagen{" "}
-              {index + 1}
+              {tipo === "directorio" ? "Directorio" : "Salón de Eventos"} -
+              Imagen {index + 1}
             </h3>
             <div className="mt-4">
               <input
@@ -162,7 +163,12 @@ function Publicidad() {
 
         {/* Configuración de Salón de Eventos */}
         <div className="mb-8">
-          {renderCamposImagenes(imagenesSalon, tiemposSalon, "salon")}
+          {renderCamposImagenes(
+            imagenesSalon,
+            tiemposSalon,
+            "salon",
+            "Salón de Eventos"
+          )}
           {imagenesSalon.length < 10 && (
             <div className="mt-4">
               <button
@@ -172,7 +178,7 @@ function Publicidad() {
                 }}
                 className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
               >
-                + Agregar Imagen
+                + Agregar Publicidad
               </button>
             </div>
           )}
@@ -183,7 +189,8 @@ function Publicidad() {
           {renderCamposImagenes(
             imagenesDirectorio,
             tiemposDirectorio,
-            "directorio"
+            "directorio",
+            "Directorio"
           )}
           {imagenesDirectorio.length < 10 && (
             <div className="mt-4">
