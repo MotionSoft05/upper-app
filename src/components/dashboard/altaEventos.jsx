@@ -117,6 +117,7 @@ function AltaEventos() {
     const diasSeleccionados = Object.keys(repeatingDays).filter(
       (day) => repeatingDays[day]
     );
+    setImages([]);
 
     const eventoData = {
       nombreEvento,
@@ -166,6 +167,8 @@ function AltaEventos() {
         setAlertaEnviada(true);
         setSelectedDevices([]);
         setSelectedImages([]);
+        setImages([]);
+        resetForm();
 
         setTimeout(() => {
           setAlertaEnviada(false);
