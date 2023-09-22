@@ -9,6 +9,8 @@ function PantallasSalon() {
   const [fontColor, setFontColor] = useState("#000000");
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [showFontColorPicker, setShowFontColorPicker] = useState(false);
+  const [selectedFontStyle, setSelectedFontStyle] = useState(null);
+  const [previewVisible, setPreviewVisible] = useState(false);
 
   const fontStyleOptions = [
     { value: "Arial", label: "Arial" },
@@ -23,28 +25,37 @@ function PantallasSalon() {
     { value: "Palatino", label: "Palatino" },
   ];
 
-  const [selectedFontStyle, setSelectedFontStyle] = useState(null);
+  // Función para obtener la fecha actual en formato dd/mm/yyyy
+  const obtenerFecha = () => {
+    const now = new Date();
+    const day = String(now.getDate()).padStart(2, "0");
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const year = now.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
+
+  // Función para obtener la hora actual en formato hh:mm:ss
+  const obtenerHora = () => {
+    const now = new Date();
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+    const seconds = String(now.getSeconds()).padStart(2, "0");
+    return `${hours}:${minutes}:${seconds}`;
+  };
 
   const handleScreen1Default = () => {
     setScreen1AspectRatio("16:9");
   };
 
-  const handleScreen1UseThis = () => {
-    // Lógica para aplicar la relación de aspecto de pantalla 1 al diseño.
-  };
+  const handleScreen1UseThis = () => {};
+  const handleScreen2UseThis = () => {};
 
   const handleScreen2Default = () => {
     setScreen2AspectRatio("9:16");
   };
-
-  const handleScreen2UseThis = () => {
-    // Lógica para aplicar la relación de aspecto de pantalla 2 al diseño.
-  };
-
   const handleTemplateColorChange = () => {
     setShowColorPicker(!showColorPicker);
   };
-
   const handleFontColorChange = () => {
     setShowFontColorPicker(!showFontColorPicker);
   };
@@ -62,7 +73,11 @@ function PantallasSalon() {
   };
 
   const handlePreviewClick = () => {
-    // Lógica para la vista previa del diseño con las opciones seleccionadas.
+    setPreviewVisible(true);
+  };
+
+  const handleClosePreview = () => {
+    setPreviewVisible(false);
   };
 
   return (
@@ -239,6 +254,67 @@ function PantallasSalon() {
               </div>
             </div>
           </div>
+
+          {/* Sección de vista previa */}
+          {previewVisible && (
+            <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-black bg-opacity-80 z-50">
+              <div className="bg-black w-3/4 h-3/4 p-6 rounded-md shadow-lg text-white relative">
+                {/* Logo en la esquina superior izquierda */}
+                <div className="absolute top-4 left-4">
+                  <img
+                    src="ruta-del-logo.png" // Reemplaza con la ruta de tu logo
+                    alt="Logo"
+                    className="w-12 h-12"
+                  />
+                </div>
+
+                {/* Fecha y hora en la esquina inferior */}
+                <div className="absolute bottom-4 left-4">
+                  <p>Fecha: {obtenerFecha()}</p>{" "}
+                  {/* Reemplaza con la lógica para obtener la fecha */}
+                  <p>Hora: {obtenerHora()}</p>{" "}
+                  {/* Reemplaza con la lógica para obtener la hora */}
+                </div>
+
+                {/* Título */}
+                <h2 className="text-2xl font-semibold mt-16 mb-4 text-center">
+                  Título del template
+                </h2>
+
+                <div className="w-full h-1/2 flex items-center justify-center">
+                  {/* Imagen a la izquierda */}
+                  <div className="w-1/2">
+                    <img
+                      src="ruta-de-la-imagen.png" // Reemplaza con la ruta de tu imagen
+                      alt="Imagen"
+                      className="w-full h-auto"
+                    />
+                  </div>
+
+                  {/* Descripciones a la derecha */}
+                  <div className="w-1/2">
+                    <p>
+                      Descripción 1: Lorem ipsum dolor sit amet, consectetur
+                      adipiscing elit.
+                    </p>
+                    <p>
+                      Descripción 2: Sed do eiusmod tempor incididunt ut labore
+                      et dolore magna aliqua.
+                    </p>
+                    {/* Agrega más descripciones según sea necesario */}
+                  </div>
+                </div>
+
+                {/* Botón para volver atrás */}
+                <button
+                  onClick={handleClosePreview}
+                  className="absolute top-4 right-4 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+                >
+                  Volver atrás
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-end mt-6">
             <button
