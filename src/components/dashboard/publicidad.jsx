@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 function Publicidad() {
-  // Estados para imágenes, tiempos y otros datos de configuración
   const [imagenesSalon, setImagenesSalon] = useState([null]);
   const [imagenesDirectorio, setImagenesDirectorio] = useState([null]);
   const [tiemposSalon, setTiemposSalon] = useState([{ horas: 0, minutos: 0 }]);
@@ -9,7 +8,6 @@ function Publicidad() {
     { horas: 0, minutos: 0 },
   ]);
 
-  // Función para manejar la selección de imágenes
   const handleImagenSelect = (event, tipo) => {
     const file = event.target.files[0];
 
@@ -24,7 +22,6 @@ function Publicidad() {
     }
   };
 
-  // Función para eliminar una imagen
   const eliminarImagen = (index, tipo) => {
     if (tipo === "salon") {
       const nuevasImagenesSalon = [...imagenesSalon];
@@ -37,7 +34,6 @@ function Publicidad() {
     }
   };
 
-  // Función para manejar la configuración de tiempo
   const handleTiempoChange = (event, index, tipo) => {
     const { name, value } = event.target;
     const newTiempos =
@@ -48,12 +44,28 @@ function Publicidad() {
       : setTiemposDirectorio(newTiempos);
   };
 
-  // Función para mostrar la vista previa
   const handlePreviewClick = () => {
     // Lógica para mostrar la vista previa de las imágenes con los tiempos configurados
   };
 
-  // Renderizar los campos de selección de imágenes
+  const handleEliminarCampo = (index, tipo) => {
+    if (tipo === "salon") {
+      const nuevasImagenesSalon = [...imagenesSalon];
+      const nuevosTiemposSalon = [...tiemposSalon];
+      nuevasImagenesSalon.splice(index, 1);
+      nuevosTiemposSalon.splice(index, 1);
+      setImagenesSalon(nuevasImagenesSalon);
+      setTiemposSalon(nuevosTiemposSalon);
+    } else if (tipo === "directorio") {
+      const nuevasImagenesDirectorio = [...imagenesDirectorio];
+      const nuevosTiemposDirectorio = [...tiemposDirectorio];
+      nuevasImagenesDirectorio.splice(index, 1);
+      nuevosTiemposDirectorio.splice(index, 1);
+      setImagenesDirectorio(nuevasImagenesDirectorio);
+      setTiemposDirectorio(nuevosTiemposDirectorio);
+    }
+  };
+
   const renderCamposImagenes = (imagenes, tiempos, tipo) => {
     return (
       <div>
@@ -73,10 +85,11 @@ function Publicidad() {
               />
               <label
                 htmlFor={`imagen${tipo}-${index}`}
-                className="block p-3 border rounded-lg cursor-pointer text-blue-500 border-blue-500 hover:bg-blue-100 hover:text-blue-700"
+                className="block p-3 border rounded-lg cursor-pointer text-blue-500 border-blue-500 hover:bg-blue-100 hover:text-blue-700 w-1/2"
               >
                 Seleccionar Imagen
               </label>
+
               {imagen && (
                 <div className="flex items-center mt-2">
                   <span className="block">{imagen.name}</span>
@@ -89,31 +102,44 @@ function Publicidad() {
                 </div>
               )}
             </div>
+
             <div className="mt-4">
               <label className="text-gray-800">Tiempo de visualización:</label>
               <div className="flex mt-2">
-                <input
-                  type="number"
-                  name="horas"
-                  min="0"
-                  max="24"
-                  value={tiempos[index].horas || 0}
-                  onChange={(event) => handleTiempoChange(event, index, tipo)}
-                  className="w-16 px-2 py-1 border rounded-md border-gray-300 focus:outline-none"
-                />
-                <span className="mx-2">horas</span>
-                <input
-                  type="number"
-                  name="minutos"
-                  min="0"
-                  max="59"
-                  value={tiempos[index].minutos || 0}
-                  onChange={(event) => handleTiempoChange(event, index, tipo)}
-                  className="w-16 px-2 py-1 border rounded-md border-gray-300 focus:outline-none"
-                />
-                <span className="ml-2">minutos</span>
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    name="horas"
+                    min="0"
+                    max="24"
+                    value={tiempos[index].horas || 0}
+                    onChange={(event) => handleTiempoChange(event, index, tipo)}
+                    className="w-16 px-2 py-1 mr-2 border rounded-md border-gray-300 focus:outline-none"
+                  />
+                  <span className="text-gray-600">horas</span>
+                </div>
+                <div className="flex items-center">
+                  <input
+                    type="number"
+                    name="minutos"
+                    min="0"
+                    max="59"
+                    value={tiempos[index].minutos || 0}
+                    onChange={(event) => handleTiempoChange(event, index, tipo)}
+                    className="w-16 px-2 py-1 ml-4 border rounded-md border-gray-300 focus:outline-none"
+                  />
+                  <span className="text-gray-600">minutos</span>
+                </div>
               </div>
             </div>
+
+            {/* Botón de eliminar campo */}
+            <button
+              onClick={() => handleEliminarCampo(index, tipo)}
+              className="mt-4 px-2 py-1 text-red-500 hover:text-red-700"
+            >
+              Eliminar Campo
+            </button>
           </div>
         ))}
       </div>
@@ -171,7 +197,7 @@ function Publicidad() {
                 }}
                 className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
               >
-                + Agregar Imagen
+                + Agregar Publicidad
               </button>
             </div>
           )}
