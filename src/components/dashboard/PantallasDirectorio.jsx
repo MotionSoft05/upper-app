@@ -27,6 +27,18 @@ function PantallasDirectorio() {
 
   const [selectedFontStyle, setSelectedFontStyle] = useState(null);
 
+  const handleAddToCalendar = () => {
+    const eventDescription = document.querySelector(
+      'input[placeholder="Descripción del evento"]'
+    ).value;
+    // Aquí puedes implementar la lógica para agregar el evento al calendario personal,
+    // ya sea para Outlook, Google Calendar u otros servicios de calendario.
+    // Por ejemplo, podrías abrir una ventana emergente o redirigir al usuario a una URL específica
+    // para agregar el evento a su calendario personal, utilizando los datos proporcionados.
+    // Esto dependerá de la API o servicio que estés utilizando para gestionar los calendarios.
+    // Después de agregar el evento con éxito, podrías mostrar un mensaje de confirmación al usuario.
+  };
+
   const handleScreen1Default = () => {
     setScreen1AspectRatio("16:9");
   };
@@ -246,17 +258,33 @@ function PantallasDirectorio() {
                 placeholder="Ingrese la URL del clima"
               />
             </div>
-            <div>
+            <div className="mb-4">
               <label className="text-white dark:text-gray-200">
-                Agregar Evento al Calendario
+                Directorio de Eventos | URL
               </label>
               <input
                 className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                 type="url"
                 value={calendarEventURL}
                 onChange={(e) => setCalendarEventURL(e.target.value)}
-                placeholder="Ingrese la URL para agregar un evento al calendario"
+                placeholder="Ingrese la URL del Directorio de Eventos"
               />
+            </div>
+            <div className="mb-4">
+              <label className="text-white dark:text-gray-200">
+                Agregar Evento al Calendario Personal
+              </label>
+              <input
+                className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                type="text"
+                placeholder="Descripción del evento"
+              />
+              <button
+                onClick={handleAddToCalendar}
+                className="mt-2 bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-md"
+              >
+                Agregar al Calendario
+              </button>
             </div>
           </div>
         </section>
