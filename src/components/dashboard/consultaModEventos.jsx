@@ -35,14 +35,8 @@ function ConsultaModEvento() {
           return {
             id: doc.id,
             ...data,
-            fechaInicio:
-              data.fechaInicio instanceof firebase.firestore.Timestamp
-                ? data.fechaInicio.toDate()
-                : data.fechaInicio,
-            fechaFinal:
-              data.fechaFinal instanceof firebase.firestore.Timestamp
-                ? data.fechaFinal.toDate()
-                : data.fechaFinal,
+            fechaInicio: data.fechaInicio.toDate(),
+            fechaFinal: data.fechaFinal.toDate(),
           };
         });
         setEventos(eventosData);
@@ -56,30 +50,43 @@ function ConsultaModEvento() {
   const eliminarEvento = async (id) => {
     try {
       await firebase.firestore().collection("eventos").doc(id).delete();
-
-      const eventosActualizados = eventos.filter((evento) => evento.id !== id);
-      setEventos(eventosActualizados);
+      setEventos(eventos.filter((evento) => evento.id !== id));
     } catch (error) {
       console.error("Error al eliminar el evento:", error);
     }
   };
 
   const abrirModalEdicion = (evento) => {
-    console.log("Abriendo modal de edición:", evento);
     setEventoEditModal({ ...evento });
     setModalAbierto(true);
   };
 
   const guardarCambios = async () => {
     try {
-      console.log("Guardando cambios:", eventoEditado);
+      const eventoActualizado = {
+        nombreEvento: eventoEditado.nombreEvento,
+        tipoEvento: eventoEditado.tipoEvento,
+        lugar: eventoEditado.lugar,
+        fechaInicio: eventoEditado.fechaInicio,
+        fechaFinal: eventoEditado.fechaFinal,
+        horaInicialSalon: eventoEditado.horaInicialSalon,
+        horaFinalSalon: eventoEditado.horaFinalSalon,
+      };
       await firebase
         .firestore()
         .collection("eventos")
         .doc(eventoEditado.id)
         .update(eventoEditado);
-
-      // Resto del código...
+      cerrarModalEdicion();
+      setModalAbierto(false);
+      const eventoIndex = eventos.findIndex(
+        (evento) => evento.id === eventoEditado.id
+      );
+      if (eventoIndex !== -1) {
+        const nuevosEventos = [...eventos];
+        nuevosEventos[eventoIndex] = eventoActualizado;
+        setEventos(nuevosEventos);
+      }
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
