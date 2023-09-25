@@ -64,13 +64,6 @@ function ConsultaModEvento() {
     }
   };
 
-  const iniciarEdicion = (evento) => {
-    console.log("Iniciando edición:", evento);
-    setModoEdicion(true);
-    // Copia de los valores actuales del evento en eventoEditado
-    setEventoEditado({ ...evento });
-  };
-
   const abrirModalEdicion = (evento) => {
     console.log("Abriendo modal de edición:", evento);
     setEventoEditModal({ ...evento });
