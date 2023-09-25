@@ -65,36 +65,31 @@ function ConsultaModEvento() {
   };
 
   const iniciarEdicion = (evento) => {
+    console.log("Iniciando edición:", evento);
     setModoEdicion(true);
+    // Copia de los valores actuales del evento en eventoEditado
     setEventoEditado({ ...evento });
+  };
+
+  const abrirModalEdicion = (evento) => {
+    console.log("Abriendo modal de edición:", evento);
+    setEventoEditModal({ ...evento });
+    setModalAbierto(true);
   };
 
   const guardarCambios = async () => {
     try {
-      console.log("Before update:", eventoEditado);
+      console.log("Guardando cambios:", eventoEditado);
       await firebase
         .firestore()
         .collection("eventos")
         .doc(eventoEditado.id)
         .update(eventoEditado);
 
-      console.log("After update:", eventoEditado);
-
-      const eventosActualizados = eventos.map((evento) =>
-        evento.id === eventoEditado.id ? eventoEditado : evento
-      );
-      setEventos(eventosActualizados);
-
-      setModoEdicion(false);
-      setEventoEditado(null);
+      // Resto del código...
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
-  };
-
-  const abrirModalEdicion = (evento) => {
-    setEventoEditModal({ ...evento });
-    setModalAbierto(true);
   };
 
   const cerrarModalEdicion = () => {
