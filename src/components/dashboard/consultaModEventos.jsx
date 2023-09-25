@@ -35,8 +35,14 @@ function ConsultaModEvento() {
           return {
             id: doc.id,
             ...data,
-            fechaInicio: data.fechaInicio.toDate(),
-            fechaFinal: data.fechaFinal.toDate(),
+            fechaInicio:
+              data.fechaInicio instanceof firebase.firestore.Timestamp
+                ? data.fechaInicio.toDate()
+                : data.fechaInicio,
+            fechaFinal:
+              data.fechaFinal instanceof firebase.firestore.Timestamp
+                ? data.fechaFinal.toDate()
+                : data.fechaFinal,
           };
         });
         setEventos(eventosData);
@@ -50,43 +56,30 @@ function ConsultaModEvento() {
   const eliminarEvento = async (id) => {
     try {
       await firebase.firestore().collection("eventos").doc(id).delete();
-      setEventos(eventos.filter((evento) => evento.id !== id));
+
+      const eventosActualizados = eventos.filter((evento) => evento.id !== id);
+      setEventos(eventosActualizados);
     } catch (error) {
       console.error("Error al eliminar el evento:", error);
     }
   };
 
   const abrirModalEdicion = (evento) => {
+    console.log("Abriendo modal de edición:", evento);
     setEventoEditModal({ ...evento });
     setModalAbierto(true);
   };
 
   const guardarCambios = async () => {
     try {
-      const eventoActualizado = {
-        nombreEvento: eventoEditado.nombreEvento,
-        tipoEvento: eventoEditado.tipoEvento,
-        lugar: eventoEditado.lugar,
-        fechaInicio: eventoEditado.fechaInicio,
-        fechaFinal: eventoEditado.fechaFinal,
-        horaInicialSalon: eventoEditado.horaInicialSalon,
-        horaFinalSalon: eventoEditado.horaFinalSalon,
-      };
+      console.log("Guardando cambios:", eventoEditado);
       await firebase
         .firestore()
         .collection("eventos")
         .doc(eventoEditado.id)
         .update(eventoEditado);
-      cerrarModalEdicion();
-      setModalAbierto(false);
-      const eventoIndex = eventos.findIndex(
-        (evento) => evento.id === eventoEditado.id
-      );
-      if (eventoIndex !== -1) {
-        const nuevosEventos = [...eventos];
-        nuevosEventos[eventoIndex] = eventoActualizado;
-        setEventos(nuevosEventos);
-      }
+
+      // Resto del código...
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -208,7 +201,9 @@ function ConsultaModEvento() {
                     ) : (
                       <div>
                         <strong>Inicio:</strong>{" "}
-                        {evento.fechaInicio.toISOString().split("T")[0]}
+                        {evento.fechaInicio instanceof Date
+                          ? evento.fechaInicio.toISOString().split("T")[0]
+                          : evento.fechaInicio}
                       </div>
                     )}
                     {modoEdicion && evento.id === eventoEditado.id ? (
@@ -228,7 +223,9 @@ function ConsultaModEvento() {
                     ) : (
                       <div>
                         <strong>Final:</strong>{" "}
-                        {evento.fechaFinal.toISOString().split("T")[0]}
+                        {evento.fechaFinal instanceof Date
+                          ? evento.fechaFinal.toISOString().split("T")[0]
+                          : evento.fechaFinal}
                       </div>
                     )}
                   </td>
