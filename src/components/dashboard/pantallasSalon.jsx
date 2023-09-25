@@ -258,16 +258,66 @@ function PantallasSalon() {
           {/* Sección de vista previa */}
           {previewVisible && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-black bg-opacity-80 z-50">
-              <div className="bg-white w-3/4 h-3/4 p-6 rounded-md shadow-lg text-black relative">
-                <div className="justify-center flex">
-                  <img src="/img/template.png" />
+              <div className="bg-white w-3/4 h-3/4 p-6 rounded-md shadow-lg text-black px-10 ">
+                <div className="flex justify-between">
+                  {/* Logo en la esquina superior izquierda */}
+                  <div className="">
+                    <img
+                      src="/img/fiestamericana.png" // Reemplaza con la ruta de tu logo
+                      alt="Logo"
+                      className="h-15"
+                    />
+                  </div>
+                  <h2 className="">Salon ejemplo</h2>
+                </div>
+                <div className="bg-gradient-to-t from-gray-50  to-white text-gray-50">
+                  <div>
+                    <div className="text-3xl font-extrabold mt-16 mb-4  bg-gradient-to-r from-custom  to-Second px-20">
+                      {/* Título */}
+                      <h2 className=" text-white">Título del template</h2>
+                    </div>
+                    <div className="w-full h-1/2 flex items-center justify-center text-black">
+                      {/* Imagen a la izquierda */}
+                      <div className="w-1/2">
+                        <img
+                          src="/img/imgTemplate.png" // Reemplaza con la ruta de tu imagen
+                          alt="/img/imgTemplate.png"
+                          className="h-15"
+                        />
+                      </div>
+
+                      {/* Descripciones a la derecha */}
+                      <div className="w-1/2">
+                        <p>
+                          Descripción 1: Lorem ipsum dolor sit amet, consectetur
+                          adipiscing elit.
+                        </p>
+                        <p>
+                          Descripción 2: Sed do eiusmod tempor incididunt ut
+                          labore et dolore magna aliqua.
+                        </p>
+                        {/* Agrega más descripciones según sea necesario */}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div>
+                    {/* Fecha y hora en la esquina inferior */}
+                    <div className=" text-2xl font-semibold mt-16 mb-4 text-center bg-gradient-to-r from-custom  to-Second text-white justify-between flex px-20 ">
+                      <p>Fecha: {obtenerFecha()}</p>{" "}
+                      {/* Reemplaza con la lógica para obtener la fecha */}
+                      <p>Hora: {obtenerHora()}</p>{" "}
+                      {/* Reemplaza con la lógica para obtener la hora */}
+                    </div>
+                  </div>
                 </div>
 
+                {/* Botón para volver atrás */}
                 <button
                   onClick={handleClosePreview}
                   className="absolute top-4 right-4 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
                 >
-                  Atrás
+                  Volver atrás
                 </button>
               </div>
             </div>
