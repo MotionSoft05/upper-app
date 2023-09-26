@@ -19,26 +19,20 @@ if (!firebase.apps.length) {
 function ConsultaModEvento() {
   const [eventos, setEventos] = useState([]);
   const [modoEdicion, setModoEdicion] = useState(false);
-  const [eventoEditado, setEventoEditado] = useState({});
+  const [eventoEditado, setEventoEditado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [eventoEditModal, setEventoEditModal] = useState({});
-  const [cambiosEventoEditado, setCambiosEventoEditado] = useState({});
 
   useEffect(() => {
     const consultarEventos = async () => {
       try {
-        const eventosSnapshot = await firebase
-          .firestore()
-          .collection("eventos")
-          .get();
-        const eventosData = eventosSnapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
+        const eventosRef = firebase.firestore().collection("eventos");
+        eventosRef.onSnapshot((snapshot) => {
+          const eventosData = snapshot.docs.map((doc) => ({
             id: doc.id,
-            ...data,
-          };
+            ...doc.data(),
+          }));
+          setEventos(eventosData);
         });
-        setEventos(eventosData);
       } catch (error) {
         console.error("Error al consultar eventos:", error);
       }
@@ -49,51 +43,33 @@ function ConsultaModEvento() {
   const eliminarEvento = async (id) => {
     try {
       await firebase.firestore().collection("eventos").doc(id).delete();
-
-      const eventosActualizados = eventos.filter((evento) => evento.id !== id);
-      setEventos(eventosActualizados);
     } catch (error) {
       console.error("Error al eliminar el evento:", error);
     }
   };
 
   const abrirModalEdicion = (evento) => {
-    console.log("Abriendo modal de edición:", evento);
-    setEventoEditModal({ ...evento });
-    setEventoEditado({ ...evento }); // Actualiza eventoEditado cuando abres el modal
+    setEventoEditado({ ...evento });
     setModalAbierto(true);
   };
 
   const guardarCambios = async () => {
     try {
-      console.log("Guardando cambios:", cambiosEventoEditado);
-      const eventoActualizado = {
-        ...eventoEditado,
-        ...cambiosEventoEditado,
-      };
-
       await firebase
         .firestore()
         .collection("eventos")
-        .doc(eventoActualizado.id)
-        .update(eventoActualizado);
-
-      setCambiosEventoEditado({});
-
-      cerrarModalEdicion();
+        .doc(eventoEditado.id)
+        .update(eventoEditado);
+      setModalAbierto(false);
+      setEventoEditado(null);
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
   };
 
-  const cerrarModalEdicion = () => {
-    setModalAbierto(false);
-    setEventoEditModal({});
-  };
-
   const handleFieldEdit = (field, value) => {
-    setCambiosEventoEditado((prevCambios) => ({
-      ...prevCambios,
+    setEventoEditado((prevEventoEditado) => ({
+      ...prevEventoEditado,
       [field]: value,
     }));
   };
@@ -107,7 +83,6 @@ function ConsultaModEvento() {
           </h1>
         </div>
         <section className="bg-gray-300 p-4 overflow-x-auto">
-          {/* Lista de eventos */}
           <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
             Lista de Eventos
           </h4>
@@ -121,11 +96,7 @@ function ConsultaModEvento() {
                   TIPO
                 </th>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  LUGAR/ES
-                </th>
-
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  HORA SALÓN
+                  LUGAR
                 </th>
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   ID DEL EVENTO
@@ -142,7 +113,7 @@ function ConsultaModEvento() {
                   className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
                 >
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado.id ? (
+                    {modoEdicion && evento.id === eventoEditado?.id ? (
                       <input
                         type="text"
                         value={eventoEditado.nombreEvento}
@@ -150,74 +121,40 @@ function ConsultaModEvento() {
                           handleFieldEdit("nombreEvento", e.target.value)
                         }
                       />
-                    ) : eventoEditado.id === evento.id ? (
+                    ) : eventoEditado?.id === evento.id ? (
                       eventoEditado.nombreEvento
                     ) : (
                       evento.nombreEvento
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado.id ? (
+                    {modoEdicion && evento.id === eventoEditado?.id ? (
                       <input
                         type="text"
-                        value={eventoEditado.tipoEvento}
+                        value={eventoEditado.tipoEvento || ""}
                         onChange={(e) =>
                           handleFieldEdit("tipoEvento", e.target.value)
                         }
                       />
-                    ) : eventoEditado.id === evento.id ? (
+                    ) : eventoEditado?.id === evento.id ? (
                       eventoEditado.tipoEvento
                     ) : (
                       evento.tipoEvento
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado.id ? (
+                    {modoEdicion && evento.id === eventoEditado?.id ? (
                       <input
                         type="text"
-                        value={eventoEditado.lugar}
+                        value={eventoEditado.lugar || ""}
                         onChange={(e) =>
                           handleFieldEdit("lugar", e.target.value)
                         }
                       />
-                    ) : eventoEditado.id === evento.id ? (
+                    ) : eventoEditado?.id === evento.id ? (
                       eventoEditado.lugar
                     ) : (
                       evento.lugar
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado.id ? (
-                      <div>
-                        <strong>Inicio:</strong>{" "}
-                        <input
-                          type="time"
-                          value={eventoEditado.horaInicialSalon}
-                          onChange={(e) =>
-                            handleFieldEdit("horaInicialSalon", e.target.value)
-                          }
-                        />
-                      </div>
-                    ) : eventoEditado.id === evento.id ? (
-                      eventoEditado.horaInicialSalon
-                    ) : (
-                      evento.horaInicialSalon
-                    )}
-                    {modoEdicion && evento.id === eventoEditado.id ? (
-                      <div>
-                        <strong>Final:</strong>{" "}
-                        <input
-                          type="time"
-                          value={eventoEditado.horaFinalSalon}
-                          onChange={(e) =>
-                            handleFieldEdit("horaFinalSalon", e.target.value)
-                          }
-                        />
-                      </div>
-                    ) : eventoEditado.id === evento.id ? (
-                      eventoEditado.horaFinalSalon
-                    ) : (
-                      evento.horaFinalSalon
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
@@ -236,10 +173,10 @@ function ConsultaModEvento() {
                             <input
                               type="text"
                               className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.nombreEvento}
+                              value={eventoEditado?.nombreEvento || ""}
                               onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
+                                setEventoEditado({
+                                  ...eventoEditado,
                                   nombreEvento: e.target.value,
                                 })
                               }
@@ -247,15 +184,15 @@ function ConsultaModEvento() {
                           </div>
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">
-                              Tipo de Evento
+                              Tipo del Evento
                             </label>
                             <input
                               type="text"
                               className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.tipoEvento}
+                              value={eventoEditado?.tipoEvento || ""}
                               onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
+                                setEventoEditado({
+                                  ...eventoEditado,
                                   tipoEvento: e.target.value,
                                 })
                               }
@@ -263,65 +200,29 @@ function ConsultaModEvento() {
                           </div>
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">
-                              Lugar/es
+                              Lugar del Evento
                             </label>
                             <input
                               type="text"
                               className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.lugar}
+                              value={eventoEditado?.lugar || ""}
                               onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
+                                setEventoEditado({
+                                  ...eventoEditado,
                                   lugar: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Hora de Inicio en el Salón
-                            </label>
-                            <input
-                              type="time"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.horaInicialSalon}
-                              onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
-                                  horaInicialSalon: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Hora de Finalización en el Salón
-                            </label>
-                            <input
-                              type="time"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.horaFinalSalon}
-                              onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
-                                  horaFinalSalon: e.target.value,
                                 })
                               }
                             />
                           </div>
                           <div className="flex justify-end">
                             <button
-                              onClick={() => {
-                                setEventoEditado(eventoEditModal);
-                                guardarCambios();
-                                cerrarModalEdicion(); // Cierra el modal después de guardar
-                              }}
+                              onClick={guardarCambios}
                               className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
                             >
                               Guardar Cambios
                             </button>
                             <button
-                              onClick={cerrarModalEdicion}
+                              onClick={() => setModalAbierto(false)}
                               className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
                             >
                               Cerrar
@@ -352,4 +253,5 @@ function ConsultaModEvento() {
     </section>
   );
 }
+
 export default ConsultaModEvento;
