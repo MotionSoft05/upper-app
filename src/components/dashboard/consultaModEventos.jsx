@@ -19,9 +19,10 @@ if (!firebase.apps.length) {
 function ConsultaModEvento() {
   const [eventos, setEventos] = useState([]);
   const [modoEdicion, setModoEdicion] = useState(false);
-  const [eventoEditado, setEventoEditado] = useState(null);
+  const [eventoEditado, setEventoEditado] = useState({});
   const [modalAbierto, setModalAbierto] = useState(false);
-  const [eventoEditModal, setEventoEditModal] = useState(null);
+  const [eventoEditModal, setEventoEditModal] = useState({});
+  const [cambiosEventoEditado, setCambiosEventoEditado] = useState({});
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -35,14 +36,6 @@ function ConsultaModEvento() {
           return {
             id: doc.id,
             ...data,
-            fechaInicio:
-              data.fechaInicio instanceof firebase.firestore.Timestamp
-                ? data.fechaInicio.toDate()
-                : data.fechaInicio,
-            fechaFinal:
-              data.fechaFinal instanceof firebase.firestore.Timestamp
-                ? data.fechaFinal.toDate()
-                : data.fechaFinal,
           };
         });
         setEventos(eventosData);
@@ -67,19 +60,27 @@ function ConsultaModEvento() {
   const abrirModalEdicion = (evento) => {
     console.log("Abriendo modal de edición:", evento);
     setEventoEditModal({ ...evento });
+    setEventoEditado({ ...evento }); // Actualiza eventoEditado cuando abres el modal
     setModalAbierto(true);
   };
 
   const guardarCambios = async () => {
     try {
-      console.log("Guardando cambios:", eventoEditado);
+      console.log("Guardando cambios:", cambiosEventoEditado);
+      const eventoActualizado = {
+        ...eventoEditado,
+        ...cambiosEventoEditado,
+      };
+
       await firebase
         .firestore()
         .collection("eventos")
-        .doc(eventoEditado.id)
-        .update(eventoEditado);
+        .doc(eventoActualizado.id)
+        .update(eventoActualizado);
 
-      // Resto del código...
+      setCambiosEventoEditado({});
+
+      cerrarModalEdicion();
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -87,7 +88,14 @@ function ConsultaModEvento() {
 
   const cerrarModalEdicion = () => {
     setModalAbierto(false);
-    setEventoEditModal(null);
+    setEventoEditModal({});
+  };
+
+  const handleFieldEdit = (field, value) => {
+    setCambiosEventoEditado((prevCambios) => ({
+      ...prevCambios,
+      [field]: value,
+    }));
   };
 
   return (
@@ -115,9 +123,7 @@ function ConsultaModEvento() {
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   LUGAR/ES
                 </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  FECHA/S
-                </th>
+
                 <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   HORA SALÓN
                 </th>
@@ -141,12 +147,11 @@ function ConsultaModEvento() {
                         type="text"
                         value={eventoEditado.nombreEvento}
                         onChange={(e) =>
-                          setEventoEditado({
-                            ...eventoEditado,
-                            nombreEvento: e.target.value,
-                          })
+                          handleFieldEdit("nombreEvento", e.target.value)
                         }
                       />
+                    ) : eventoEditado.id === evento.id ? (
+                      eventoEditado.nombreEvento
                     ) : (
                       evento.nombreEvento
                     )}
@@ -157,12 +162,11 @@ function ConsultaModEvento() {
                         type="text"
                         value={eventoEditado.tipoEvento}
                         onChange={(e) =>
-                          setEventoEditado({
-                            ...eventoEditado,
-                            tipoEvento: e.target.value,
-                          })
+                          handleFieldEdit("tipoEvento", e.target.value)
                         }
                       />
+                    ) : eventoEditado.id === evento.id ? (
+                      eventoEditado.tipoEvento
                     ) : (
                       evento.tipoEvento
                     )}
@@ -173,60 +177,13 @@ function ConsultaModEvento() {
                         type="text"
                         value={eventoEditado.lugar}
                         onChange={(e) =>
-                          setEventoEditado({
-                            ...eventoEditado,
-                            lugar: e.target.value,
-                          })
+                          handleFieldEdit("lugar", e.target.value)
                         }
                       />
+                    ) : eventoEditado.id === evento.id ? (
+                      eventoEditado.lugar
                     ) : (
                       evento.lugar
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado.id ? (
-                      <div>
-                        <strong>Inicio:</strong>{" "}
-                        <input
-                          type="date"
-                          value={eventoEditado.fechaInicio}
-                          onChange={(e) =>
-                            setEventoEditado({
-                              ...eventoEditado,
-                              fechaInicio: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <strong>Inicio:</strong>{" "}
-                        {evento.fechaInicio instanceof Date
-                          ? evento.fechaInicio.toISOString().split("T")[0]
-                          : evento.fechaInicio}
-                      </div>
-                    )}
-                    {modoEdicion && evento.id === eventoEditado.id ? (
-                      <div>
-                        <strong>Final:</strong>{" "}
-                        <input
-                          type="date"
-                          value={eventoEditado.fechaFinal}
-                          onChange={(e) =>
-                            setEventoEditado({
-                              ...eventoEditado,
-                              fechaFinal: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <div>
-                        <strong>Final:</strong>{" "}
-                        {evento.fechaFinal instanceof Date
-                          ? evento.fechaFinal.toISOString().split("T")[0]
-                          : evento.fechaFinal}
-                      </div>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -237,17 +194,14 @@ function ConsultaModEvento() {
                           type="time"
                           value={eventoEditado.horaInicialSalon}
                           onChange={(e) =>
-                            setEventoEditado({
-                              ...eventoEditado,
-                              horaInicialSalon: e.target.value,
-                            })
+                            handleFieldEdit("horaInicialSalon", e.target.value)
                           }
                         />
                       </div>
+                    ) : eventoEditado.id === evento.id ? (
+                      eventoEditado.horaInicialSalon
                     ) : (
-                      <div>
-                        <strong>Inicio:</strong> {evento.horaInicialSalon}
-                      </div>
+                      evento.horaInicialSalon
                     )}
                     {modoEdicion && evento.id === eventoEditado.id ? (
                       <div>
@@ -256,17 +210,14 @@ function ConsultaModEvento() {
                           type="time"
                           value={eventoEditado.horaFinalSalon}
                           onChange={(e) =>
-                            setEventoEditado({
-                              ...eventoEditado,
-                              horaFinalSalon: e.target.value,
-                            })
+                            handleFieldEdit("horaFinalSalon", e.target.value)
                           }
                         />
                       </div>
+                    ) : eventoEditado.id === evento.id ? (
+                      eventoEditado.horaFinalSalon
                     ) : (
-                      <div>
-                        <strong>Final:</strong> {evento.horaFinalSalon}
-                      </div>
+                      evento.horaFinalSalon
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
@@ -328,38 +279,6 @@ function ConsultaModEvento() {
                           </div>
                           <div className="mb-4">
                             <label className="block text-sm font-medium text-gray-700">
-                              Fecha de Inicio
-                            </label>
-                            <input
-                              type="date"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.fechaInicio}
-                              onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
-                                  fechaInicio: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Fecha de Finalización
-                            </label>
-                            <input
-                              type="date"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditModal.fechaFinal}
-                              onChange={(e) =>
-                                setEventoEditModal({
-                                  ...eventoEditModal,
-                                  fechaFinal: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
                               Hora de Inicio en el Salón
                             </label>
                             <input
@@ -393,6 +312,7 @@ function ConsultaModEvento() {
                           <div className="flex justify-end">
                             <button
                               onClick={() => {
+                                setEventoEditado(eventoEditModal);
                                 guardarCambios();
                                 cerrarModalEdicion(); // Cierra el modal después de guardar
                               }}
