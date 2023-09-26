@@ -204,14 +204,14 @@ function AltaEventos() {
   };
 
   return (
-    <section className="px-32">
+    <section className="px-16 md:px-32">
       <div>
         <div className="p-5">
           <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl">
             Alta de eventos
           </h1>
         </div>
-        <section class="grid grid-cols-2 gap-4">
+        <section class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div class="bg-gray-300 p-4">
             <form>
               <div class="relative z-0 w-full mb-6 group">
