@@ -11,7 +11,6 @@ const firebaseConfig = {
   appId: "1:665713417470:web:73f7fb8ee518bea35999af",
   measurementId: "G-QTFQ55YY5D",
 };
-
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
@@ -76,22 +75,14 @@ function ConsultaModEvento() {
     }));
   };
 
-  function formatDate(dateString) {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString(undefined, options);
-  }
   function formatFirebaseDate(firebaseDate) {
-    // Verificar si la fecha ya está en el formato deseado "dd/mm/yyyy"
     if (firebaseDate.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
       return firebaseDate;
     }
-
     const parts = firebaseDate.split("-");
     const year = parts[0];
     const month = parts[1];
     const day = parts[2];
-
-    // Formatear la fecha en el formato deseado "dd/mm/yyyy"
     return `${day}/${month}/${year}`;
   }
 
