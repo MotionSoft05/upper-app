@@ -105,6 +105,12 @@ function ConsultaModEvento() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
+                FECHA/S
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 HORA SALON
               </th>
               <th
@@ -171,6 +177,47 @@ function ConsultaModEvento() {
                     eventoEditado.lugar
                   ) : (
                     evento.lugar
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <>
+                      <input
+                        type="date"
+                        value={eventoEditado.fechaInicio || ""}
+                        onChange={(e) =>
+                          handleFieldEdit("fechaInicio", e.target.value)
+                        }
+                        className="w-full px-2 py-1 border rounded-lg text-center"
+                      />
+                      <br />
+                      <input
+                        type="date"
+                        value={eventoEditado.fechaFinal || ""}
+                        onChange={(e) =>
+                          handleFieldEdit("fechaFinal", e.target.value)
+                        }
+                        className="w-full px-2 py-1 border rounded-lg text-center"
+                      />
+                    </>
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.fechaInicio === eventoEditado.fechaFinal ? (
+                      eventoEditado.fechaInicio
+                    ) : (
+                      <>
+                        {eventoEditado.fechaInicio}
+                        <br />
+                        {eventoEditado.fechaFinal}
+                      </>
+                    )
+                  ) : evento.fechaInicio === evento.fechaFinal ? (
+                    evento.fechaInicio
+                  ) : (
+                    <>
+                      {evento.fechaInicio}
+                      <br />
+                      {evento.fechaFinal}
+                    </>
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-center">
