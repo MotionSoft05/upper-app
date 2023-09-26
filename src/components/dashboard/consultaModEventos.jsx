@@ -24,6 +24,7 @@ function ConsultaModEvento() {
   const [horaInicialReal, setHoraInicialReal] = useState("");
   const [horaFinalReal, setHoraFinalReal] = useState("");
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
+  const [selectedDevices, setSelectedDevices] = useState([]);
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -75,13 +76,15 @@ function ConsultaModEvento() {
           ...eventoEditado,
           horaInicialReal,
           horaFinalReal,
-          diasSeleccionados, // Asegúrate de incluir los días seleccionados
+          diasSeleccionados,
+          // Do not include selectedDevices in the update
         });
       setModalAbierto(false);
       setEventoEditado(null);
       setHoraInicialReal("");
       setHoraFinalReal("");
-      setDiasSeleccionados([]); // Restablece los días seleccionados
+      setDiasSeleccionados([]);
+      // No need to reset selectedDevices here
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -491,6 +494,18 @@ function ConsultaModEvento() {
                                 <span>{dia}</span>
                               </label>
                             ))}
+                          </div>
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Dispositivos Seleccionados
+                          </label>
+                          <div className="text-center">
+                            {/* Render devices as a comma-separated list */}
+                            {evento.devices && evento.devices.length > 0
+                              ? evento.devices.join(", ")
+                              : "N/A" // Display "N/A" if no devices are available
+                            }
                           </div>
                         </div>
                         <div className="flex justify-end">
