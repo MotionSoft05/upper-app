@@ -23,6 +23,7 @@ function ConsultaModEvento() {
   const [edicionFechas, setEdicionFechas] = useState(false);
   const [horaInicialReal, setHoraInicialReal] = useState("");
   const [horaFinalReal, setHoraFinalReal] = useState("");
+  const [diasSeleccionados, setDiasSeleccionados] = useState([]);
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -52,8 +53,9 @@ function ConsultaModEvento() {
 
   const abrirModalEdicion = (evento) => {
     setEventoEditado({ ...evento });
-    setHoraInicialReal(evento.horaInicialReal || ""); // Puedes establecer un valor predeterminado si lo deseas
-    setHoraFinalReal(evento.horaFinalReal || ""); // Puedes establecer un valor predeterminado si lo deseas
+    setHoraInicialReal(evento.horaInicialReal || "");
+    setHoraFinalReal(evento.horaFinalReal || "");
+    setDiasSeleccionados(evento.diasSeleccionados || []); // Asegúrate de manejar el valor predeterminado adecuadamente
     setModalAbierto(true);
     setEdicionFechas(false);
   };
@@ -68,12 +70,13 @@ function ConsultaModEvento() {
           ...eventoEditado,
           horaInicialReal,
           horaFinalReal,
+          diasSeleccionados, // Asegúrate de incluir los días seleccionados
         });
       setModalAbierto(false);
       setEventoEditado(null);
-      // También puedes restablecer los nuevos campos aquí si lo deseas
       setHoraInicialReal("");
       setHoraFinalReal("");
+      setDiasSeleccionados([]); // Restablece los días seleccionados
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -417,7 +420,16 @@ function ConsultaModEvento() {
                             className="w-full px-2 py-1 border rounded-lg text-center"
                           />
                         </div>
-
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Días Seleccionados
+                          </label>
+                          <ul>
+                            {diasSeleccionados.map((dia, index) => (
+                              <li key={index}>{dia}</li>
+                            ))}
+                          </ul>
+                        </div>
                         <div className="flex justify-end">
                           <button
                             onClick={guardarCambios}
