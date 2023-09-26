@@ -338,7 +338,7 @@ function ConsultaModEvento() {
                         </div>
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
-                            Fecha de Inicio del Evento
+                            Fecha de Inicio
                           </label>
                           <input
                             type="date"
@@ -353,7 +353,7 @@ function ConsultaModEvento() {
                         </div>
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
-                            Fecha de Finalización del Evento
+                            Fecha de Finalización
                           </label>
                           <input
                             type="date"
@@ -368,7 +368,7 @@ function ConsultaModEvento() {
                         </div>
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
-                            Hora Inicial del Evento
+                            Hora Inicial Salon
                           </label>
                           <input
                             type="time"
@@ -384,7 +384,7 @@ function ConsultaModEvento() {
                         </div>
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
-                            Hora Final del Evento
+                            Hora Final Salon
                           </label>
                           <input
                             type="time"
