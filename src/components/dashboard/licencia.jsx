@@ -5,7 +5,7 @@ import DatosNegocio from "./licenciaComponentes/datosNegocio";
 import InformacionAdicional from "./licenciaComponentes/InformacionAdicional";
 
 function Licencia() {
-  const [showDatosNegocio, setShowDatosNegocio] = useState(false);
+  const [showDatosNegocio, setShowDatosNegocio] = useState(true);
   const [showDatosFiscales, setShowDatosFiscales] = useState(false);
   const [showLicenciaContratada, setShowLicenciaContratada] = useState(false);
   const [showInformacionAdicional, setShowInformacionAdicional] =
@@ -13,9 +13,9 @@ function Licencia() {
 
   return (
     <section className="px-8 py-12">
-      <div class="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
-        <ul class="flex flex-wrap -mb-px">
-          <li class="mr-2">
+      <div className="text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:text-gray-400 dark:border-gray-700">
+        <ul className="flex flex-wrap -mb-px">
+          <li className="mr-2">
             <button
               onClick={() => {
                 setShowDatosNegocio(true);
@@ -24,12 +24,12 @@ function Licencia() {
                 setShowInformacionAdicional(false);
               }}
             >
-              <div class="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500">
+              <div className="inline-block p-4 text-blue-600 border-b-2 border-blue-600 rounded-t-lg active dark:text-blue-500 dark:border-blue-500">
                 <span className="ml-3">Datos generales del negocio</span>
               </div>
             </button>
           </li>
-          <li class="mr-2">
+          <li className="mr-2">
             <button
               onClick={() => {
                 setShowDatosNegocio(false);
@@ -38,12 +38,12 @@ function Licencia() {
                 setShowInformacionAdicional(false);
               }}
             >
-              <div class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
+              <div className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300">
                 <span className="ml-3">Datos fiscales</span>
               </div>
             </button>
           </li>
-          <li class="mr-2">
+          <li className="mr-2">
             <button
               onClick={() => {
                 setShowDatosNegocio(false);
@@ -54,13 +54,13 @@ function Licencia() {
             >
               <a
                 href="#"
-                class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               >
                 Información de licencia contratada
               </a>
             </button>
           </li>
-          <li class="mr-2">
+          <li className="mr-2">
             <button
               onClick={() => {
                 setShowDatosNegocio(false);
@@ -71,7 +71,7 @@ function Licencia() {
             >
               <a
                 href="#"
-                class="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
+                className="inline-block p-4 border-b-2 border-transparent rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
               >
                 Información adicional
               </a>

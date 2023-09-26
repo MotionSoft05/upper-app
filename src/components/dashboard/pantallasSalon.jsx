@@ -207,7 +207,7 @@ function PantallasSalon() {
               <label className="text-white dark:text-gray-200">Logo</label>
               <div className="flex items-center">
                 <input
-                  class="block w-full text-sm  border rounded-lg cursor-pointer  text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  className="block w-full text-sm  border rounded-lg cursor-pointer  text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                   type="file"
                 />
               </div>
@@ -234,21 +234,21 @@ function PantallasSalon() {
               <div className="mr-4">
                 <p>SALON A</p>
                 <input
-                  class="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                   type="text"
                 />
               </div>
               <div className="mr-4">
                 <p>SALON B</p>
                 <input
-                  class="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                   type="text"
                 />
               </div>
               <div>
                 <p>SALON C</p>
                 <input
-                  class="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
+                  className="block w-full text-sm border rounded-lg cursor-pointer text-gray-400 focus:outline-none bg-gray-700 border-gray-600 placeholder-gray-400"
                   type="text"
                 />
               </div>
