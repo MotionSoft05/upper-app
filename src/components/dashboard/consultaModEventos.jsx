@@ -56,12 +56,17 @@ function ConsultaModEvento() {
     setEventoEditado({ ...evento });
     setHoraInicialReal(evento.horaInicialReal || "");
     setHoraFinalReal(evento.horaFinalReal || "");
-
-    // Verifica si el evento tiene días seleccionados y cópialos si es necesario
     const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
     console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
     setDiasSeleccionados(diasSeleccionadosDelEvento);
-
+    handleFieldEdit(
+      "fechaInicio",
+      formatoFechaDDMMAAAA(evento.fechaInicio || "")
+    );
+    handleFieldEdit(
+      "fechaFinal",
+      formatoFechaDDMMAAAA(evento.fechaFinal || "")
+    );
     setModalAbierto(true);
     setEdicionFechas(false);
   };
@@ -85,9 +90,8 @@ function ConsultaModEvento() {
           horaInicialReal,
           horaFinalReal,
           diasSeleccionados,
-          fechaInicio: fechaInicioFormateada, // Guarda la fecha formateada en Firebase
-          fechaFinal: fechaFinalFormateada, // Guarda la fecha formateada en Firebase
-          // No incluyas selectedDevices en la actualización
+          fechaInicio: fechaInicioFormateada,
+          fechaFinal: fechaFinalFormateada,
         });
 
       setModalAbierto(false);
@@ -95,7 +99,6 @@ function ConsultaModEvento() {
       setHoraInicialReal("");
       setHoraFinalReal("");
       setDiasSeleccionados([]);
-      // No es necesario restablecer selectedDevices aquí
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -130,17 +133,14 @@ function ConsultaModEvento() {
   const toggleDiaSeleccionado = (dia) => {
     setDiasSeleccionados((prevDias) => {
       if (prevDias.includes(dia)) {
-        // Si el día ya estaba seleccionado, quítalo de la lista
         return prevDias.filter((d) => d !== dia);
       } else {
-        // Si el día no estaba seleccionado, agrégalo a la lista
         return [...prevDias, dia];
       }
     });
   };
 
   function conversionNombres(nombre) {
-    // Realiza la conversión de minúscula a mayúscula si es necesario
     switch (nombre.toLowerCase()) {
       case "lunes":
         return "Lunes";
