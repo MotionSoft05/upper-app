@@ -59,16 +59,37 @@ function ConsultaModEvento() {
     const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
     console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
     setDiasSeleccionados(diasSeleccionadosDelEvento);
-    handleFieldEdit(
-      "fechaInicio",
-      formatoFechaDDMMAAAA(evento.fechaInicio || "")
-    );
-    handleFieldEdit(
-      "fechaFinal",
-      formatoFechaDDMMAAAA(evento.fechaFinal || "")
-    );
+
+    // Verifica y formatea la fecha de inicio si existe
+    const fechaInicioFormateada = evento.fechaInicio
+      ? formatoFechaDDMMAAAA(evento.fechaInicio)
+      : "";
+
+    // Verifica y formatea la fecha de finalización si existe
+    const fechaFinalFormateada = evento.fechaFinal
+      ? formatoFechaDDMMAAAA(evento.fechaFinal)
+      : "";
+
+    handleFieldEdit("fechaInicio", fechaInicioFormateada);
+    handleFieldEdit("fechaFinal", fechaFinalFormateada);
+
     setModalAbierto(true);
     setEdicionFechas(false);
+  };
+
+  const cerrarModal = () => {
+    // Restaura las fechas originales cuando se cierra la ventana modal sin cambios
+    const fechaInicioOriginal = eventoEditado.fechaInicio || "";
+    const fechaFinalOriginal = eventoEditado.fechaFinal || "";
+
+    handleFieldEdit("fechaInicio", fechaInicioOriginal);
+    handleFieldEdit("fechaFinal", fechaFinalOriginal);
+
+    setModalAbierto(false);
+    setEventoEditado(null);
+    setHoraInicialReal("");
+    setHoraFinalReal("");
+    setDiasSeleccionados([]);
   };
 
   const guardarCambios = async () => {
@@ -536,7 +557,7 @@ function ConsultaModEvento() {
                             Guardar Cambios
                           </button>
                           <button
-                            onClick={() => setModalAbierto(false)}
+                            onClick={cerrarModal}
                             className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
                           >
                             Cerrar
