@@ -75,180 +75,246 @@ function ConsultaModEvento() {
   };
 
   return (
-    <section className="px-32">
-      <div>
-        <div className="p-5">
-          <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl">
-            Consulta y Modificación de Eventos
-          </h1>
-        </div>
-        <section className="bg-gray-300 p-4 overflow-x-auto">
-          <h4 className="mb-4 text-2xl leading-none tracking-tight text-gray-900">
-            Lista de Eventos
-          </h4>
-          <table className="min-w-full table-fixed">
-            <thead>
-              <tr>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  NOMBRE
-                </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  TIPO
-                </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  LUGAR
-                </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ID DEL EVENTO
-                </th>
-                <th className="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  ACCIONES
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              {eventos.map((evento, index) => (
-                <tr
-                  key={index}
-                  className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado?.id ? (
-                      <input
-                        type="text"
-                        value={eventoEditado.nombreEvento}
-                        onChange={(e) =>
-                          handleFieldEdit("nombreEvento", e.target.value)
-                        }
-                      />
-                    ) : eventoEditado?.id === evento.id ? (
-                      eventoEditado.nombreEvento
-                    ) : (
-                      evento.nombreEvento
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado?.id ? (
-                      <input
-                        type="text"
-                        value={eventoEditado.tipoEvento || ""}
-                        onChange={(e) =>
-                          handleFieldEdit("tipoEvento", e.target.value)
-                        }
-                      />
-                    ) : eventoEditado?.id === evento.id ? (
-                      eventoEditado.tipoEvento
-                    ) : (
-                      evento.tipoEvento
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modoEdicion && evento.id === eventoEditado?.id ? (
-                      <input
-                        type="text"
-                        value={eventoEditado.lugar || ""}
-                        onChange={(e) =>
-                          handleFieldEdit("lugar", e.target.value)
-                        }
-                      />
-                    ) : eventoEditado?.id === evento.id ? (
-                      eventoEditado.lugar
-                    ) : (
-                      evento.lugar
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {modalAbierto && (
-                      <div className="fixed inset-0 flex items-center justify-center z-50">
-                        <div className="fixed inset-0 z-40 bg-black opacity-70"></div>
-                        <div className="bg-white p-4 rounded shadow-lg z-50 relative">
-                          <h2 className="text-xl font-bold mb-4">
-                            Editar Evento
-                          </h2>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Nombre del Evento
-                            </label>
-                            <input
-                              type="text"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditado?.nombreEvento || ""}
-                              onChange={(e) =>
-                                setEventoEditado({
-                                  ...eventoEditado,
-                                  nombreEvento: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Tipo del Evento
-                            </label>
-                            <input
-                              type="text"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditado?.tipoEvento || ""}
-                              onChange={(e) =>
-                                setEventoEditado({
-                                  ...eventoEditado,
-                                  tipoEvento: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="mb-4">
-                            <label className="block text-sm font-medium text-gray-700">
-                              Lugar del Evento
-                            </label>
-                            <input
-                              type="text"
-                              className="mt-1 p-2 w-full border rounded-lg"
-                              value={eventoEditado?.lugar || ""}
-                              onChange={(e) =>
-                                setEventoEditado({
-                                  ...eventoEditado,
-                                  lugar: e.target.value,
-                                })
-                              }
-                            />
-                          </div>
-                          <div className="flex justify-end">
-                            <button
-                              onClick={guardarCambios}
-                              className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
-                            >
-                              Guardar Cambios
-                            </button>
-                            <button
-                              onClick={() => setModalAbierto(false)}
-                              className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
-                            >
-                              Cerrar
-                            </button>
-                          </div>
+    <section className="px-4 py-6 mx-auto max-w-7xl">
+      <h1 className="text-3xl font-extrabold text-gray-900">
+        Consulta y Modificación de Eventos
+      </h1>
+      <div className="mt-6 overflow-hidden bg-white shadow-md rounded-lg">
+        <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                NOMBRE
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                TIPO
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                LUGAR
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                HORA SALON
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                ID DEL EVENTO
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                ACCIONES
+              </th>
+            </tr>
+          </thead>
+          <tbody className="bg-white divide-y divide-gray-200">
+            {eventos.map((evento, index) => (
+              <tr
+                key={index}
+                className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
+              >
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <input
+                      type="text"
+                      value={eventoEditado.nombreEvento}
+                      onChange={(e) =>
+                        handleFieldEdit("nombreEvento", e.target.value)
+                      }
+                      className="w-full px-2 py-1 border rounded-lg text-center"
+                    />
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.nombreEvento
+                  ) : (
+                    evento.nombreEvento
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <input
+                      type="text"
+                      value={eventoEditado.tipoEvento || ""}
+                      onChange={(e) =>
+                        handleFieldEdit("tipoEvento", e.target.value)
+                      }
+                      className="w-full px-2 py-1 border rounded-lg text-center"
+                    />
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.tipoEvento
+                  ) : (
+                    evento.tipoEvento
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <input
+                      type="text"
+                      value={eventoEditado.lugar || ""}
+                      onChange={(e) => handleFieldEdit("lugar", e.target.value)}
+                      className="w-full px-2 py-1 border rounded-lg text-center"
+                    />
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.lugar
+                  ) : (
+                    evento.lugar
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-center">
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <input
+                      type="time"
+                      value={eventoEditado.horaInicialSalon || ""}
+                      onChange={(e) =>
+                        handleFieldEdit("horaInicialSalon", e.target.value)
+                      }
+                      className="w-full px-2 py-1 border rounded-lg"
+                    />
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.horaInicialSalon
+                  ) : (
+                    evento.horaInicialSalon
+                  )}
+                  <br />
+                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                    <input
+                      type="time"
+                      value={eventoEditado.horaFinalSalon || ""}
+                      onChange={(e) =>
+                        handleFieldEdit("horaFinalSalon", e.target.value)
+                      }
+                      className="w-full px-2 py-1 border rounded-lg"
+                    />
+                  ) : eventoEditado?.id === evento.id ? (
+                    eventoEditado.horaFinalSalon
+                  ) : (
+                    evento.horaFinalSalon
+                  )}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
+                <td className="px-6 py-4 text-center">
+                  {modalAbierto && (
+                    <div className="fixed inset-0 flex items-center justify-center z-50">
+                      <div className="fixed inset-0 z-40 bg-black opacity-70"></div>
+                      <div className="bg-white p-4 rounded shadow-lg z-50 relative">
+                        <h2 className="text-xl font-bold mb-4">
+                          Editar Evento
+                        </h2>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Nombre del Evento
+                          </label>
+                          <input
+                            type="text"
+                            value={eventoEditado?.nombreEvento || ""}
+                            onChange={(e) =>
+                              handleFieldEdit("nombreEvento", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Tipo del Evento
+                          </label>
+                          <input
+                            type="text"
+                            value={eventoEditado?.tipoEvento || ""}
+                            onChange={(e) =>
+                              handleFieldEdit("tipoEvento", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Lugar del Evento
+                          </label>
+                          <input
+                            type="text"
+                            value={eventoEditado?.lugar || ""}
+                            onChange={(e) =>
+                              handleFieldEdit("lugar", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Hora Inicial del Evento
+                          </label>
+                          <input
+                            type="time"
+                            value={eventoEditado?.horaInicialSalon || ""}
+                            onChange={(e) =>
+                              handleFieldEdit(
+                                "horaInicialSalon",
+                                e.target.value
+                              )
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Hora Final del Evento
+                          </label>
+                          <input
+                            type="time"
+                            value={eventoEditado?.horaFinalSalon || ""}
+                            onChange={(e) =>
+                              handleFieldEdit("horaFinalSalon", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="flex justify-end">
+                          <button
+                            onClick={guardarCambios}
+                            className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
+                          >
+                            Guardar Cambios
+                          </button>
+                          <button
+                            onClick={() => setModalAbierto(false)}
+                            className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
+                          >
+                            Cerrar
+                          </button>
                         </div>
                       </div>
-                    )}
-                    <button
-                      onClick={() => abrirModalEdicion(evento)}
-                      className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
-                    >
-                      Editar
-                    </button>
-                    <button
-                      onClick={() => eliminarEvento(evento.id)}
-                      className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
-                    >
-                      Eliminar
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </section>
+                    </div>
+                  )}
+                  <button
+                    onClick={() => abrirModalEdicion(evento)}
+                    className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
+                  >
+                    Editar
+                  </button>
+                  <button
+                    onClick={() => eliminarEvento(evento.id)}
+                    className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
+                  >
+                    Eliminar
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </section>
   );
