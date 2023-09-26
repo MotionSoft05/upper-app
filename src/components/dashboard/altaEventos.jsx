@@ -104,16 +104,6 @@ function AltaEventos() {
       horaFinalReal.split(":")[0],
       horaFinalReal.split(":")[1]
     );
-    const fechaInicioSalon = new Date(value.startDate);
-    fechaInicioSalon.setHours(
-      horaInicialSalon.split(":")[0],
-      horaInicialSalon.split(":")[1]
-    );
-    const fechaFinalSalon = new Date(value.endDate);
-    fechaFinalSalon.setHours(
-      horaFinalSalon.split(":")[0],
-      horaFinalSalon.split(":")[1]
-    );
     const diasSeleccionados = Object.keys(repeatingDays).filter(
       (day) => repeatingDays[day]
     );
@@ -129,8 +119,6 @@ function AltaEventos() {
       horaFinalSalon,
       fechaInicio,
       fechaFinal,
-      fechaInicioSalon,
-      fechaFinalSalon,
       diasSeleccionados,
       images,
     };
