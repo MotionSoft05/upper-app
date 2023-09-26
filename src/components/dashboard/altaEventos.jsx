@@ -60,13 +60,13 @@ function AltaEventos() {
   };
 
   const [repeatingDays, setRepeatingDays] = useState({
-    lunes: false,
-    martes: false,
-    miércoles: false,
-    jueves: false,
-    viernes: false,
-    sábado: false,
-    domingo: false,
+    Lunes: false,
+    Martes: false,
+    Miércoles: false,
+    Jueves: false,
+    Viernes: false,
+    Sábado: false,
+    Domingo: false,
   });
 
   const handleRepeatingDayChange = (day) => {
@@ -155,13 +155,13 @@ function AltaEventos() {
           endDate: new Date().setMonth(11),
         });
         setRepeatingDays({
-          lunes: false,
-          martes: false,
-          miércoles: false,
-          jueves: false,
-          viernes: false,
-          sábado: false,
-          domingo: false,
+          Lunes: false,
+          Martes: false,
+          Miércoles: false,
+          Jueves: false,
+          Viernes: false,
+          Sábado: false,
+          Domingo: false,
         });
         setAlertaEnviada(true);
         setSelectedDevices([]);
