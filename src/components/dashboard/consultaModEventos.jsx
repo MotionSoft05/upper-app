@@ -87,6 +87,12 @@ function ConsultaModEvento() {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
+                N
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
                 NOMBRE
               </th>
               <th
@@ -130,9 +136,10 @@ function ConsultaModEvento() {
           <tbody className="bg-white divide-y divide-gray-200">
             {eventos.map((evento, index) => (
               <tr
-                key={index}
+                key={evento.id}
                 className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
               >
+                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
