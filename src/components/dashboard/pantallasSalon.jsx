@@ -81,7 +81,7 @@ function PantallasSalon() {
   };
 
   return (
-    <section className="px-32">
+    <section className="px-8 py-12">
       <div>
         <div className="p-5">
           <h1 className="mb-4 text-3xl font-extrabold leading-none tracking-tight text-gray-900 md:text-4xl">
@@ -100,13 +100,13 @@ function PantallasSalon() {
             </div>
             <button
               onClick={handleScreen1Default}
-              className="mb-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+              className="mb-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full active:bg-gray-500"
             >
               Set Default
             </button>
             <button
               onClick={handleScreen1UseThis}
-              className="mt-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full"
+              className="mt-2 bg-gray-300 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded-full active:bg-gray-500"
             >
               Use This
             </button>
@@ -258,8 +258,8 @@ function PantallasSalon() {
           {/* Sección de vista previa */}
           {previewVisible && (
             <div className="fixed top-0 left-0 flex items-center justify-center w-screen h-screen bg-black bg-opacity-80 z-50">
-              <div className="bg-white w-3/4 h-3/4 p-6 rounded-md shadow-lg text-black px-10 ">
-                <div className="flex justify-between">
+              <div className="bg-white w-2/4  p-6 rounded-md shadow-lg text-black  ">
+                <div className="flex justify-between items-baseline">
                   {/* Logo en la esquina superior izquierda */}
                   <div className="">
                     <img
@@ -268,46 +268,49 @@ function PantallasSalon() {
                       className="h-15"
                     />
                   </div>
-                  <h2 className="">Salon ejemplo</h2>
+                  <h1 className=" text-4xl font-bold">Salon ejemplo</h1>
                 </div>
                 <div className="bg-gradient-to-t from-gray-50  to-white text-gray-50">
-                  <div>
-                    <div className="text-3xl font-extrabold mt-16 mb-4  bg-gradient-to-r from-custom  to-Second px-20">
+                  <div className="">
+                    <div className="text-3xl font-extrabold    bg-gradient-to-r from-custom  to-Second px-20">
                       {/* Título */}
                       <h2 className=" text-white">Título del template</h2>
                     </div>
-                    <div className="w-full h-1/2 flex items-center justify-center text-black">
+                    <div className="flex justify-between text-black">
                       {/* Imagen a la izquierda */}
-                      <div className="w-1/2">
+                      <div className="flex items-center">
                         <img
                           src="/img/imgTemplate.png" // Reemplaza con la ruta de tu imagen
-                          alt="/img/imgTemplate.png"
+                          alt="imgTemplate"
                           className="h-15"
                         />
+                        <div className=" space-y-5 pl-5 ">
+                          <div>
+                            <h1>Sesión:</h1>
+                            <p>14:00 hrs</p>
+                          </div>
+                          <div>
+                            <h1>Conferencia:</h1>
+                            <p>
+                              Impartido por el profesor Alejandro Grinberg, "La
+                              transfiguración del lector y la lectura a raíz de
+                              las nuevas tecnologías"
+                            </p>
+                          </div>
+                        </div>
                       </div>
 
-                      {/* Descripciones a la derecha */}
-                      <div className="w-1/2">
-                        <p>
-                          Descripción 1: Lorem ipsum dolor sit amet, consectetur
-                          adipiscing elit.
-                        </p>
-                        <p>
-                          Descripción 2: Sed do eiusmod tempor incididunt ut
-                          labore et dolore magna aliqua.
-                        </p>
-                        {/* Agrega más descripciones según sea necesario */}
-                      </div>
+                      {/* Div solo para que la imagen este a la derecha */}
+                      <div></div>
                     </div>
-                  </div>
-
-                  <div>
-                    {/* Fecha y hora en la esquina inferior */}
-                    <div className=" text-2xl font-semibold mt-16 mb-4 text-center bg-gradient-to-r from-custom  to-Second text-white justify-between flex px-20 ">
-                      <p>Fecha: {obtenerFecha()}</p>{" "}
-                      {/* Reemplaza con la lógica para obtener la fecha */}
-                      <p>Hora: {obtenerHora()}</p>{" "}
-                      {/* Reemplaza con la lógica para obtener la hora */}
+                    <div>
+                      {/* Fecha y hora en la esquina inferior */}
+                      <div className=" text-2xl font-semibold mt-1  text-center bg-gradient-to-r from-custom  to-Second text-white justify-between flex px-20 ">
+                        <p>Fecha: {obtenerFecha()}</p>{" "}
+                        {/* Reemplaza con la lógica para obtener la fecha */}
+                        <p>Hora: {obtenerHora()}</p>{" "}
+                        {/* Reemplaza con la lógica para obtener la hora */}
+                      </div>
                     </div>
                   </div>
                 </div>
