@@ -68,6 +68,14 @@ function ConsultaModEvento() {
 
   const guardarCambios = async () => {
     try {
+      // Realiza la conversión de formato de fecha antes de guardarla en Firebase
+      const fechaInicioFormateada = formatoFechaDDMMAAAA(
+        eventoEditado.fechaInicio
+      );
+      const fechaFinalFormateada = formatoFechaDDMMAAAA(
+        eventoEditado.fechaFinal
+      );
+
       await firebase
         .firestore()
         .collection("eventos")
@@ -77,18 +85,29 @@ function ConsultaModEvento() {
           horaInicialReal,
           horaFinalReal,
           diasSeleccionados,
-          // Do not include selectedDevices in the update
+          fechaInicio: fechaInicioFormateada, // Guarda la fecha formateada en Firebase
+          fechaFinal: fechaFinalFormateada, // Guarda la fecha formateada en Firebase
+          // No incluyas selectedDevices en la actualización
         });
+
       setModalAbierto(false);
       setEventoEditado(null);
       setHoraInicialReal("");
       setHoraFinalReal("");
       setDiasSeleccionados([]);
-      // No need to reset selectedDevices here
+      // No es necesario restablecer selectedDevices aquí
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
   };
+
+  function formatoFechaDDMMAAAA(fecha) {
+    const parts = fecha.split("-");
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+    return `${day}/${month}/${year}`;
+  }
 
   const handleFieldEdit = (field, value) => {
     setEventoEditado((prevEventoEditado) => ({
@@ -502,9 +521,10 @@ function ConsultaModEvento() {
                           </label>
                           <div className="text-center">
                             {/* Render devices as a comma-separated list */}
-                            {evento.devices && evento.devices.length > 0
-                              ? evento.devices.join(", ")
-                              : "N/A" // Display "N/A" if no devices are available
+                            {
+                              evento.devices && evento.devices.length > 0
+                                ? evento.devices.join(", ")
+                                : "N/A" // Display "N/A" if no devices are available
                             }
                           </div>
                         </div>
