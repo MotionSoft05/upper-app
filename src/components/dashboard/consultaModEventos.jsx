@@ -405,7 +405,7 @@ function ConsultaModEvento() {
                     onClick={() => abrirModalEdicion(evento)}
                     className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
                   >
-                    Editar
+                    Ver más/Editar
                   </button>
                   <button
                     onClick={() => eliminarEvento(evento.id)}
