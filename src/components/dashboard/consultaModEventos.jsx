@@ -24,7 +24,6 @@ function ConsultaModEvento() {
   const [horaInicialReal, setHoraInicialReal] = useState("");
   const [horaFinalReal, setHoraFinalReal] = useState("");
   const [diasSeleccionados, setDiasSeleccionados] = useState([]);
-  const [selectedDevices, setSelectedDevices] = useState([]);
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -59,13 +58,9 @@ function ConsultaModEvento() {
     const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
     console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
     setDiasSeleccionados(diasSeleccionadosDelEvento);
-
-    // Verifica y formatea la fecha de inicio si existe
     const fechaInicioFormateada = evento.fechaInicio
       ? formatoFechaDDMMAAAA(evento.fechaInicio)
       : "";
-
-    // Verifica y formatea la fecha de finalización si existe
     const fechaFinalFormateada = evento.fechaFinal
       ? formatoFechaDDMMAAAA(evento.fechaFinal)
       : "";
@@ -78,7 +73,6 @@ function ConsultaModEvento() {
   };
 
   const cerrarModal = () => {
-    // Restaura las fechas originales cuando se cierra la ventana modal sin cambios
     const fechaInicioOriginal = eventoEditado.fechaInicio || "";
     const fechaFinalOriginal = eventoEditado.fechaFinal || "";
 
@@ -94,7 +88,6 @@ function ConsultaModEvento() {
 
   const guardarCambios = async () => {
     try {
-      // Realiza la conversión de formato de fecha antes de guardarla en Firebase
       const fechaInicioFormateada = formatoFechaDDMMAAAA(
         eventoEditado.fechaInicio
       );
