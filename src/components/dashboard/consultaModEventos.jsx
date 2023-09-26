@@ -21,6 +21,7 @@ function ConsultaModEvento() {
   const [modoEdicion, setModoEdicion] = useState(false);
   const [eventoEditado, setEventoEditado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
+  const [edicionFechas, setEdicionFechas] = useState(false);
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -51,6 +52,7 @@ function ConsultaModEvento() {
   const abrirModalEdicion = (evento) => {
     setEventoEditado({ ...evento });
     setModalAbierto(true);
+    setEdicionFechas(false);
   };
 
   const guardarCambios = async () => {
@@ -73,6 +75,25 @@ function ConsultaModEvento() {
       [field]: value,
     }));
   };
+
+  function formatDate(dateString) {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
+  function formatFirebaseDate(firebaseDate) {
+    // Verificar si la fecha ya está en el formato deseado "dd/mm/yyyy"
+    if (firebaseDate.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      return firebaseDate;
+    }
+
+    const parts = firebaseDate.split("-");
+    const year = parts[0];
+    const month = parts[1];
+    const day = parts[2];
+
+    // Formatear la fecha en el formato deseado "dd/mm/yyyy"
+    return `${day}/${month}/${year}`;
+  }
 
   return (
     <section className="px-4 py-6 mx-auto max-w-7xl">
@@ -187,11 +208,15 @@ function ConsultaModEvento() {
                   )}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  {modoEdicion && evento.id === eventoEditado?.id ? (
+                  {modoEdicion &&
+                  evento.id === eventoEditado?.id &&
+                  edicionFechas ? (
                     <>
                       <input
                         type="date"
-                        value={eventoEditado.fechaInicio || ""}
+                        value={
+                          formatFirebaseDate(eventoEditado.fechaInicio) || ""
+                        }
                         onChange={(e) =>
                           handleFieldEdit("fechaInicio", e.target.value)
                         }
@@ -200,33 +225,36 @@ function ConsultaModEvento() {
                       <br />
                       <input
                         type="date"
-                        value={eventoEditado.fechaFinal || ""}
+                        value={
+                          formatFirebaseDate(eventoEditado.fechaFinal) || ""
+                        }
                         onChange={(e) =>
                           handleFieldEdit("fechaFinal", e.target.value)
                         }
                         className="w-full px-2 py-1 border rounded-lg text-center"
                       />
                     </>
-                  ) : eventoEditado?.id === evento.id ? (
-                    eventoEditado.fechaInicio === eventoEditado.fechaFinal ? (
-                      eventoEditado.fechaInicio
+                  ) : evento.id === eventoEditado?.id ? (
+                    evento.fechaInicio === eventoEditado.fechaFinal ? (
+                      formatFirebaseDate(eventoEditado.fechaInicio)
                     ) : (
                       <>
-                        {eventoEditado.fechaInicio}
+                        {formatFirebaseDate(eventoEditado.fechaInicio)}
                         <br />
-                        {eventoEditado.fechaFinal}
+                        {formatFirebaseDate(eventoEditado.fechaFinal)}
                       </>
                     )
                   ) : evento.fechaInicio === evento.fechaFinal ? (
-                    evento.fechaInicio
+                    formatFirebaseDate(evento.fechaInicio)
                   ) : (
                     <>
-                      {evento.fechaInicio}
+                      {formatFirebaseDate(evento.fechaInicio)}
                       <br />
-                      {evento.fechaFinal}
+                      {formatFirebaseDate(evento.fechaFinal)}
                     </>
                   )}
                 </td>
+
                 <td className="px-6 py-4 whitespace-nowrap text-center">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
@@ -302,6 +330,36 @@ function ConsultaModEvento() {
                             value={eventoEditado?.lugar || ""}
                             onChange={(e) =>
                               handleFieldEdit("lugar", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Fecha de Inicio del Evento
+                          </label>
+                          <input
+                            type="date"
+                            value={
+                              eventoEditado?.fechaInicio || evento.fechaInicio
+                            }
+                            onChange={(e) =>
+                              handleFieldEdit("fechaInicio", e.target.value)
+                            }
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Fecha de Finalización del Evento
+                          </label>
+                          <input
+                            type="date"
+                            value={
+                              eventoEditado?.fechaFinal || evento.fechaFinal
+                            }
+                            onChange={(e) =>
+                              handleFieldEdit("fechaFinal", e.target.value)
                             }
                             className="w-full px-2 py-1 border rounded-lg text-center"
                           />
