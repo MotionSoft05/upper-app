@@ -21,6 +21,8 @@ function ConsultaModEvento() {
   const [eventoEditado, setEventoEditado] = useState(null);
   const [modalAbierto, setModalAbierto] = useState(false);
   const [edicionFechas, setEdicionFechas] = useState(false);
+  const [horaInicialReal, setHoraInicialReal] = useState("");
+  const [horaFinalReal, setHoraFinalReal] = useState("");
 
   useEffect(() => {
     const consultarEventos = async () => {
@@ -50,6 +52,8 @@ function ConsultaModEvento() {
 
   const abrirModalEdicion = (evento) => {
     setEventoEditado({ ...evento });
+    setHoraInicialReal(evento.horaInicialReal || ""); // Puedes establecer un valor predeterminado si lo deseas
+    setHoraFinalReal(evento.horaFinalReal || ""); // Puedes establecer un valor predeterminado si lo deseas
     setModalAbierto(true);
     setEdicionFechas(false);
   };
@@ -60,9 +64,16 @@ function ConsultaModEvento() {
         .firestore()
         .collection("eventos")
         .doc(eventoEditado.id)
-        .update(eventoEditado);
+        .update({
+          ...eventoEditado,
+          horaInicialReal,
+          horaFinalReal,
+        });
       setModalAbierto(false);
       setEventoEditado(null);
+      // También puedes restablecer los nuevos campos aquí si lo deseas
+      setHoraInicialReal("");
+      setHoraFinalReal("");
     } catch (error) {
       console.error("Error al guardar cambios:", error);
     }
@@ -384,6 +395,29 @@ function ConsultaModEvento() {
                             className="w-full px-2 py-1 border rounded-lg text-center"
                           />
                         </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Hora Inicial Real
+                          </label>
+                          <input
+                            type="time"
+                            value={horaInicialReal}
+                            onChange={(e) => setHoraInicialReal(e.target.value)}
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+                        <div className="mb-4">
+                          <label className="block text-sm font-medium text-gray-700">
+                            Hora Final Real
+                          </label>
+                          <input
+                            type="time"
+                            value={horaFinalReal}
+                            onChange={(e) => setHoraFinalReal(e.target.value)}
+                            className="w-full px-2 py-1 border rounded-lg text-center"
+                          />
+                        </div>
+
                         <div className="flex justify-end">
                           <button
                             onClick={guardarCambios}
