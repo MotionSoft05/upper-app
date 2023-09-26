@@ -55,7 +55,12 @@ function ConsultaModEvento() {
     setEventoEditado({ ...evento });
     setHoraInicialReal(evento.horaInicialReal || "");
     setHoraFinalReal(evento.horaFinalReal || "");
-    setDiasSeleccionados(evento.diasSeleccionados || []); // Asegúrate de manejar el valor predeterminado adecuadamente
+
+    // Verifica si el evento tiene días seleccionados y cópialos si es necesario
+    const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
+    console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
+    setDiasSeleccionados(diasSeleccionadosDelEvento);
+
     setModalAbierto(true);
     setEdicionFechas(false);
   };
@@ -98,6 +103,40 @@ function ConsultaModEvento() {
     const month = parts[1];
     const day = parts[2];
     return `${day}/${month}/${year}`;
+  }
+
+  const toggleDiaSeleccionado = (dia) => {
+    setDiasSeleccionados((prevDias) => {
+      if (prevDias.includes(dia)) {
+        // Si el día ya estaba seleccionado, quítalo de la lista
+        return prevDias.filter((d) => d !== dia);
+      } else {
+        // Si el día no estaba seleccionado, agrégalo a la lista
+        return [...prevDias, dia];
+      }
+    });
+  };
+
+  function conversionNombres(nombre) {
+    // Realiza la conversión de minúscula a mayúscula si es necesario
+    switch (nombre.toLowerCase()) {
+      case "lunes":
+        return "Lunes";
+      case "martes":
+        return "Martes";
+      case "miércoles":
+        return "Miércoles";
+      case "jueves":
+        return "Jueves";
+      case "viernes":
+        return "Viernes";
+      case "sábado":
+        return "Sábado";
+      case "domingo":
+        return "Domingo";
+      default:
+        return nombre;
+    }
   }
 
   return (
@@ -422,13 +461,37 @@ function ConsultaModEvento() {
                         </div>
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
-                            Días Seleccionados
+                            Días de la Semana
                           </label>
-                          <ul>
-                            {diasSeleccionados.map((dia, index) => (
-                              <li key={index}>{dia}</li>
+                          <div className="flex space-x-4">
+                            {[
+                              "Lunes",
+                              "Martes",
+                              "Miércoles",
+                              "Jueves",
+                              "Viernes",
+                              "Sábado",
+                              "Domingo",
+                            ].map((dia) => (
+                              <label
+                                key={dia}
+                                className="flex items-center space-x-2"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={
+                                    diasSeleccionados.includes(dia) ||
+                                    diasSeleccionados.includes(
+                                      conversionNombres(dia)
+                                    )
+                                  }
+                                  onChange={() => toggleDiaSeleccionado(dia)}
+                                  className="form-checkbox text-green-500 border-green-300 rounded"
+                                />
+                                <span>{dia}</span>
+                              </label>
                             ))}
-                          </ul>
+                          </div>
                         </div>
                         <div className="flex justify-end">
                           <button
