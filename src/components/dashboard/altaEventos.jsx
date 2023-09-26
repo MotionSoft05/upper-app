@@ -118,6 +118,7 @@ function AltaEventos() {
     const diasSeleccionados = Object.keys(repeatingDays).filter(
       (day) => repeatingDays[day]
     );
+    const devices = selectedDevices;
     setImages([]);
 
     const eventoData = {
@@ -132,6 +133,7 @@ function AltaEventos() {
       fechaFinal: formattedFechaFinal,
       diasSeleccionados,
       images,
+      devices,
     };
 
     firebase
