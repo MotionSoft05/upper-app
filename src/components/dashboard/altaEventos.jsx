@@ -104,6 +104,17 @@ function AltaEventos() {
       horaFinalReal.split(":")[0],
       horaFinalReal.split(":")[1]
     );
+    const formattedFechaInicio = fechaInicio.toLocaleDateString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+
+    const formattedFechaFinal = fechaFinal.toLocaleDateString("es-AR", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
     const diasSeleccionados = Object.keys(repeatingDays).filter(
       (day) => repeatingDays[day]
     );
@@ -117,8 +128,8 @@ function AltaEventos() {
       horaFinalReal,
       horaInicialSalon,
       horaFinalSalon,
-      fechaInicio,
-      fechaFinal,
+      fechaInicio: formattedFechaInicio,
+      fechaFinal: formattedFechaFinal,
       diasSeleccionados,
       images,
     };
