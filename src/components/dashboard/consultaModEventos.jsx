@@ -176,72 +176,71 @@ function ConsultaModEvento() {
   }
 
   return (
-    <section className="px-4 py-6 mx-auto max-w-7xl">
+    <section className="pl-14 md:px-32">
       <h1 className="text-3xl font-extrabold text-gray-900">
         Consulta y Modificación de Eventos
       </h1>
-      <div className="mt-6 overflow-hidden bg-white shadow-md rounded-lg">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div className=" mt-6 overflow-hidden bg-white shadow-md rounded-lg">
+        <table className=" divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-0.5 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 N
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 NOMBRE
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 TIPO
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 LUGAR
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 FECHA/S
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 HORA SALON
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="hidden md:block px-2 py-1 md:px-6 md:py-3 text-left text-xs font-medium text-gray-500 "
               >
                 ID DEL EVENTO
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-0.5 py-1 md:px-6 md:py-3 text-center text-xs font-medium text-gray-500 "
               >
                 ACCIONES
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
+          <tbody className="bg-white">
             {eventos.map((evento, index) => (
-              <tr
-                key={evento.id}
-                className={index % 2 === 0 ? "bg-gray-50" : "bg-white"}
-              >
-                <td className="px-6 py-4 whitespace-nowrap">{index + 1}</td>
-                <td className="px-6 py-4 whitespace-nowrap">
+              <tr key={evento.id} className="text-xs md:text-base">
+                {/* Contador */}
+                <td className="md:px-6 md:py-4 ">{index + 1}</td>
+                {/* Nombre */}
+                <td className="md:px-6 md:py-4 ">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
                       type="text"
@@ -257,7 +256,8 @@ function ConsultaModEvento() {
                     evento.nombreEvento
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {/* Tipo  */}
+                <td className="md:px-6 md:py-4 ">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
                       type="text"
@@ -273,7 +273,8 @@ function ConsultaModEvento() {
                     evento.tipoEvento
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {/* Lugar   */}
+                <td className="md:px-6 md:py-4 ">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
                       type="text"
@@ -287,7 +288,8 @@ function ConsultaModEvento() {
                     evento.lugar
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">
+                {/* Fecha */}
+                <td className="md:px-6 md:py-4 ">
                   {modoEdicion &&
                   evento.id === eventoEditado?.id &&
                   edicionFechas ? (
@@ -334,8 +336,8 @@ function ConsultaModEvento() {
                     </>
                   )}
                 </td>
-
-                <td className="px-6 py-4 whitespace-nowrap text-center">
+                {/* Hora salon     */}
+                <td className="md:px-6 md:py-4">
                   {modoEdicion && evento.id === eventoEditado?.id ? (
                     <input
                       type="time"
@@ -366,11 +368,13 @@ function ConsultaModEvento() {
                     evento.horaFinalSalon
                   )}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap">{evento.id}</td>
-                <td className="px-6 py-4 text-center">
+                {/* Id Evento */}
+                <td className="hidden md:block md:px-6 md:py-4">{evento.id}</td>
+                {/* Editar */}
+                <td className="md:px-6 md:py-4">
                   {modalAbierto && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
-                      <div className="fixed inset-0 z-40 bg-black opacity-70"></div>
+                      <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
                       <div className="bg-white p-4 rounded shadow-lg z-50 relative">
                         <h2 className="text-xl font-bold mb-4">
                           Editar Evento
@@ -561,13 +565,13 @@ function ConsultaModEvento() {
                   )}
                   <button
                     onClick={() => abrirModalEdicion(evento)}
-                    className="text-white bg-green-500 hover:bg-green-600 px-4 py-2 rounded-lg mr-2"
+                    className="text-white bg-green-500 hover:bg-green-600 px-2 py-1 rounded-lg "
                   >
                     Ver más/Editar
                   </button>
                   <button
                     onClick={() => eliminarEvento(evento.id)}
-                    className="text-white bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg"
+                    className="text-white bg-red-500 hover:bg-red-600 px-2 py-1 rounded-lg"
                   >
                     Eliminar
                   </button>
