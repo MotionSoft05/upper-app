@@ -9,6 +9,7 @@ function Sidebar({
   setShowlicencia,
   setShowGuia,
   setShowSoporte,
+  setShowAdmin,
 }) {
   return (
     <div className="sidebar-content px-4 py-6">
@@ -18,9 +19,34 @@ function Sidebar({
             Principal
           </span>
         </div>
+
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(true);
+              setShowAltaEvento(false);
+              setShowConsultaEvento(false);
+              setShowPantallaSalon(false);
+              setShowPantallaDirectorio(false);
+              setShowPublicidad(false);
+              setShowlicencia(false);
+              setShowGuia(false);
+              setShowSoporte(false);
+            }}
+          >
+            <a
+              href="#"
+              className="flex flex-row items-center h-10 px-3 rounded-lg text-gray-300 hover:bg-gray-100 hover:text-gray-700"
+            >
+              <span className="ml-3">Admin</span>
+            </a>
+          </button>
+        </li>
+
+        <li className="my-px">
+          <button
+            onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(true);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
@@ -55,6 +81,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(true);
               setShowPantallaSalon(false);
@@ -94,6 +121,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(true);
@@ -128,6 +156,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
@@ -162,6 +191,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
@@ -201,6 +231,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
@@ -235,6 +266,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
@@ -269,6 +301,7 @@ function Sidebar({
         <li className="my-px">
           <button
             onClick={() => {
+              setShowAdmin(false);
               setShowAltaEvento(false);
               setShowConsultaEvento(false);
               setShowPantallaSalon(false);
