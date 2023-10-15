@@ -19,8 +19,8 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-
+//const storage = getStorage(app);
+asassa;
 function AltaEventos() {
   const [value, setValue] = useState({
     startDate: new Date(),
