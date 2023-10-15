@@ -376,7 +376,7 @@ function ConsultaModEvento() {
                   {modalAbierto && (
                     <div className="fixed inset-0 flex items-center justify-center z-50">
                       <div className="fixed inset-0 z-40 bg-black opacity-25"></div>
-                      <div className="bg-white p-4 rounded shadow-lg z-50 relative">
+                      <div className="bg-white p-4 md:p-8 rounded shadow-lg z-50 w-full md:w-96">
                         <h2 className="text-xl font-bold mb-4">
                           Editar Evento
                         </h2>
@@ -504,7 +504,7 @@ function ConsultaModEvento() {
                           <label className="block text-sm font-medium text-gray-700">
                             Días de la Semana
                           </label>
-                          <div className="flex space-x-4">
+                          <div className="flex flex-wrap space-x-2 md:space-x-4">
                             {[
                               "Lunes",
                               "Martes",
