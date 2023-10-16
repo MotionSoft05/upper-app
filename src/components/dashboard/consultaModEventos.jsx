@@ -59,12 +59,10 @@ function ConsultaModEvento() {
     const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
     console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
     setDiasSeleccionados(diasSeleccionadosDelEvento);
-    const fechaInicioFormateada = evento.fechaInicio
-      ? formatoFechaDDMMAAAA(evento.fechaInicio)
-      : "";
-    const fechaFinalFormateada = evento.fechaFinal
-      ? formatoFechaDDMMAAAA(evento.fechaFinal)
-      : "";
+    const fechaInicioFormateada = formatoFechaDDMMAAAA(
+      evento.fechaInicio || ""
+    );
+    const fechaFinalFormateada = formatoFechaDDMMAAAA(evento.fechaFinal || "");
 
     handleFieldEdit("fechaInicio", fechaInicioFormateada);
     handleFieldEdit("fechaFinal", fechaFinalFormateada);
@@ -95,7 +93,6 @@ function ConsultaModEvento() {
       const fechaFinalFormateada = formatoFechaDDMMAAAA(
         eventoEditado.fechaFinal
       );
-
       await firebase
         .firestore()
         .collection("eventos")
@@ -120,11 +117,11 @@ function ConsultaModEvento() {
   };
 
   function formatoFechaDDMMAAAA(fecha) {
-    const parts = fecha.split("-");
-    const year = parts[0];
-    const month = parts[1];
-    const day = parts[2];
-    return `${day}/${month}/${year}`;
+    if (fecha && fecha.includes("-")) {
+      const [year, month, day] = fecha.split("-");
+      return `${day}/${month}/${year}`;
+    }
+    return fecha; // Si la fecha no contiene "-", devolverla sin formato
   }
 
   const handleFieldEdit = (field, value) => {
@@ -135,13 +132,13 @@ function ConsultaModEvento() {
   };
 
   function formatFirebaseDate(firebaseDate) {
-    if (firebaseDate.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-      return firebaseDate;
+    if (!firebaseDate || firebaseDate.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
+      return firebaseDate || ""; // Devuelve la cadena vacía si firebaseDate es undefined
     }
     const parts = firebaseDate.split("-");
-    const year = parts[0];
-    const month = parts[1];
     const day = parts[2];
+    const month = parts[1];
+    const year = parts[0];
     return `${day}/${month}/${year}`;
   }
 
@@ -424,9 +421,10 @@ function ConsultaModEvento() {
                             Fecha de Inicio
                           </label>
                           <input
-                            type="date"
+                            type="text"
                             value={
-                              eventoEditado?.fechaInicio || evento.fechaInicio
+                              formatFirebaseDate(eventoEditado?.fechaInicio) ||
+                              ""
                             }
                             onChange={(e) =>
                               handleFieldEdit("fechaInicio", e.target.value)
@@ -439,9 +437,10 @@ function ConsultaModEvento() {
                             Fecha de Finalización
                           </label>
                           <input
-                            type="date"
+                            type="text"
                             value={
-                              eventoEditado?.fechaFinal || evento.fechaFinal
+                              formatFirebaseDate(eventoEditado?.fechaFinal) ||
+                              ""
                             }
                             onChange={(e) =>
                               handleFieldEdit("fechaFinal", e.target.value)
