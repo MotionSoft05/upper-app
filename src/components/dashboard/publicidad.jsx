@@ -148,77 +148,82 @@ function Publicidad() {
   };
 
   return (
-    <section className="px-8 py-12">
+    <section className="px-16 md:px-32">
       <div>
-        {/* Selección de pantallas */}
-        <div className="mb-8">
-          <h2 className="text-3xl font-extrabold text-gray-900">
-            CONFIGURACIÓN DE PUBLICIDAD
-          </h2>
-          <p className="text-gray-600">
-            Ingresar imágenes que serán desplegadas cuando no se cuente con
-            eventos.
-          </p>
-        </div>
+        <section className="">
+          {/* Selección de pantallas */}
+          <div className="mb-8">
+            <h2 className="text-3xl font-extrabold text-gray-900">
+              CONFIGURACIÓN DE PUBLICIDAD
+            </h2>
+            <p className="text-gray-600">
+              Ingresar imágenes que serán desplegadas cuando no se cuente con
+              eventos.
+            </p>
+          </div>
 
-        {/* Configuración de Salón de Eventos */}
-        <div className="mb-8">
-          {renderCamposImagenes(
-            imagenesSalon,
-            tiemposSalon,
-            "salon",
-            "Salón de Eventos"
-          )}
-          {imagenesSalon.length < 10 && (
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  setImagenesSalon([...imagenesSalon, null]);
-                  setTiemposSalon([...tiemposSalon, { horas: 0, minutos: 0 }]);
-                }}
-                className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
-              >
-                + Agregar Publicidad
-              </button>
-            </div>
-          )}
-        </div>
+          {/* Configuración de Salón de Eventos */}
+          <div className="mb-8">
+            {renderCamposImagenes(
+              imagenesSalon,
+              tiemposSalon,
+              "salon",
+              "Salón de Eventos"
+            )}
+            {imagenesSalon.length < 10 && (
+              <div className="mt-4">
+                <button
+                  onClick={() => {
+                    setImagenesSalon([...imagenesSalon, null]);
+                    setTiemposSalon([
+                      ...tiemposSalon,
+                      { horas: 0, minutos: 0 },
+                    ]);
+                  }}
+                  className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
+                >
+                  + Agregar Publicidad
+                </button>
+              </div>
+            )}
+          </div>
 
-        {/* Configuración de Directorio */}
-        <div className="mb-8">
-          {renderCamposImagenes(
-            imagenesDirectorio,
-            tiemposDirectorio,
-            "directorio",
-            "Directorio"
-          )}
-          {imagenesDirectorio.length < 10 && (
-            <div className="mt-4">
-              <button
-                onClick={() => {
-                  setImagenesDirectorio([...imagenesDirectorio, null]);
-                  setTiemposDirectorio([
-                    ...tiemposDirectorio,
-                    { horas: 0, minutos: 0 },
-                  ]);
-                }}
-                className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
-              >
-                + Agregar Publicidad
-              </button>
-            </div>
-          )}
-        </div>
+          {/* Configuración de Directorio */}
+          <div className="mb-8">
+            {renderCamposImagenes(
+              imagenesDirectorio,
+              tiemposDirectorio,
+              "directorio",
+              "Directorio"
+            )}
+            {imagenesDirectorio.length < 10 && (
+              <div className="mt-4">
+                <button
+                  onClick={() => {
+                    setImagenesDirectorio([...imagenesDirectorio, null]);
+                    setTiemposDirectorio([
+                      ...tiemposDirectorio,
+                      { horas: 0, minutos: 0 },
+                    ]);
+                  }}
+                  className="px-4 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
+                >
+                  + Agregar Publicidad
+                </button>
+              </div>
+            )}
+          </div>
 
-        {/* Botón de vista previa */}
-        <div className="text-center">
-          <button
-            onClick={handlePreviewClick}
-            className="px-6 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
-          >
-            Vista Previa
-          </button>
-        </div>
+          {/* Botón de vista previa */}
+          <div className="text-center">
+            <button
+              onClick={handlePreviewClick}
+              className="px-6 py-2 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none"
+            >
+              Vista Previa
+            </button>
+          </div>
+        </section>
       </div>
     </section>
   );
