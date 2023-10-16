@@ -56,28 +56,12 @@ function ConsultaModEvento() {
     setEventoEditado({ ...evento });
     setHoraInicialReal(evento.horaInicialReal || "");
     setHoraFinalReal(evento.horaFinalReal || "");
-    const diasSeleccionadosDelEvento = evento.diasSeleccionados || [];
-    console.log("Días seleccionados del evento:", diasSeleccionadosDelEvento);
-    setDiasSeleccionados(diasSeleccionadosDelEvento);
-    const fechaInicioFormateada = formatoFechaDDMMAAAA(
-      evento.fechaInicio || ""
-    );
-    const fechaFinalFormateada = formatoFechaDDMMAAAA(evento.fechaFinal || "");
-
-    handleFieldEdit("fechaInicio", fechaInicioFormateada);
-    handleFieldEdit("fechaFinal", fechaFinalFormateada);
-
+    setDiasSeleccionados(evento.diasSeleccionados || []);
     setModalAbierto(true);
     setEdicionFechas(false);
   };
 
   const cerrarModal = () => {
-    const fechaInicioOriginal = eventoEditado.fechaInicio || "";
-    const fechaFinalOriginal = eventoEditado.fechaFinal || "";
-
-    handleFieldEdit("fechaInicio", fechaInicioOriginal);
-    handleFieldEdit("fechaFinal", fechaFinalOriginal);
-
     setModalAbierto(false);
     setEventoEditado(null);
     setHoraInicialReal("");
@@ -87,12 +71,8 @@ function ConsultaModEvento() {
 
   const guardarCambios = async () => {
     try {
-      const fechaInicioFormateada = formatoFechaDDMMAAAA(
-        eventoEditado.fechaInicio
-      );
-      const fechaFinalFormateada = formatoFechaDDMMAAAA(
-        eventoEditado.fechaFinal
-      );
+      const fechaInicioFormateada = eventoEditado.fechaInicio;
+      const fechaFinalFormateada = eventoEditado.fechaFinal;
       await firebase
         .firestore()
         .collection("eventos")
@@ -116,31 +96,12 @@ function ConsultaModEvento() {
     }
   };
 
-  function formatoFechaDDMMAAAA(fecha) {
-    if (fecha && fecha.includes("-")) {
-      const [year, month, day] = fecha.split("-");
-      return `${day}/${month}/${year}`;
-    }
-    return fecha; // Si la fecha no contiene "-", devolverla sin formato
-  }
-
   const handleFieldEdit = (field, value) => {
     setEventoEditado((prevEventoEditado) => ({
       ...prevEventoEditado,
       [field]: value,
     }));
   };
-
-  function formatFirebaseDate(firebaseDate) {
-    if (!firebaseDate || firebaseDate.match(/^\d{2}\/\d{2}\/\d{4}$/)) {
-      return firebaseDate || ""; // Devuelve la cadena vacía si firebaseDate es undefined
-    }
-    const parts = firebaseDate.split("-");
-    const day = parts[2];
-    const month = parts[1];
-    const year = parts[0];
-    return `${day}/${month}/${year}`;
-  }
 
   const toggleDiaSeleccionado = (dia) => {
     setDiasSeleccionados((prevDias) => {
@@ -291,12 +252,10 @@ function ConsultaModEvento() {
                   {modoEdicion &&
                   evento.id === eventoEditado?.id &&
                   edicionFechas ? (
-                    <>
+                    <div>
                       <input
                         type="date"
-                        value={
-                          formatFirebaseDate(eventoEditado.fechaInicio) || ""
-                        }
+                        value={eventoEditado.fechaInicio || ""}
                         onChange={(e) =>
                           handleFieldEdit("fechaInicio", e.target.value)
                         }
@@ -305,32 +264,30 @@ function ConsultaModEvento() {
                       <br />
                       <input
                         type="date"
-                        value={
-                          formatFirebaseDate(eventoEditado.fechaFinal) || ""
-                        }
+                        value={eventoEditado.fechaFinal || ""}
                         onChange={(e) =>
                           handleFieldEdit("fechaFinal", e.target.value)
                         }
                         className="w-full px-2 py-1 border rounded-lg text-center"
                       />
-                    </>
+                    </div>
                   ) : evento.id === eventoEditado?.id ? (
                     evento.fechaInicio === eventoEditado.fechaFinal ? (
-                      formatFirebaseDate(eventoEditado.fechaInicio)
+                      eventoEditado.fechaInicio
                     ) : (
                       <>
-                        {formatFirebaseDate(eventoEditado.fechaInicio)}
+                        {eventoEditado.fechaInicio}
                         <br />
-                        {formatFirebaseDate(eventoEditado.fechaFinal)}
+                        {eventoEditado.fechaFinal}
                       </>
                     )
                   ) : evento.fechaInicio === evento.fechaFinal ? (
-                    formatFirebaseDate(evento.fechaInicio)
+                    evento.fechaInicio
                   ) : (
                     <>
-                      {formatFirebaseDate(evento.fechaInicio)}
+                      {evento.fechaInicio}
                       <br />
-                      {formatFirebaseDate(evento.fechaFinal)}
+                      {evento.fechaFinal}
                     </>
                   )}
                 </td>
@@ -421,11 +378,8 @@ function ConsultaModEvento() {
                             Fecha de Inicio
                           </label>
                           <input
-                            type="text"
-                            value={
-                              formatFirebaseDate(eventoEditado?.fechaInicio) ||
-                              ""
-                            }
+                            type="date"
+                            value={eventoEditado?.fechaInicio || ""}
                             onChange={(e) =>
                               handleFieldEdit("fechaInicio", e.target.value)
                             }
@@ -437,17 +391,15 @@ function ConsultaModEvento() {
                             Fecha de Finalización
                           </label>
                           <input
-                            type="text"
-                            value={
-                              formatFirebaseDate(eventoEditado?.fechaFinal) ||
-                              ""
-                            }
+                            type="date"
+                            value={eventoEditado?.fechaFinal || ""}
                             onChange={(e) =>
                               handleFieldEdit("fechaFinal", e.target.value)
                             }
                             className="w-full px-2 py-1 border rounded-lg text-center"
                           />
                         </div>
+
                         <div className="mb-4">
                           <label className="block text-sm font-medium text-gray-700">
                             Hora Inicial Salon
