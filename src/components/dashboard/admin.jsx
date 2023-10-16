@@ -1,6 +1,6 @@
 function Admin() {
   return (
-    <div class="flex flex-col h-screen bg-gray-100">
+    <div class="flex flex-col  bg-gray-100">
       {/* <!-- Barra de navegación superior --> */}
 
       {/* <!-- Contenido principal --> */}
@@ -8,7 +8,7 @@ function Admin() {
         {/* <!-- Barra lateral de navegación (oculta en dispositivos pequeños) --> */}
 
         {/* <!-- Área de contenido principal --> */}
-        <div class="flex-1 p-4 w-full md:w-1/2">
+        <div class="flex-1 p-4 ">
           {/* <!-- Campo de búsqueda --> */}
           <div class="relative max-w-md w-full">
             <div class="absolute top-1 left-2 inline-flex items-center p-2">
